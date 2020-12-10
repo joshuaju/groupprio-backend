@@ -25,6 +25,35 @@
     </build>
     <dependencies>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.10</version>
+        </dependency>
+
+        <!-- server -->
+        <dependency>
+            <groupId>io.undertow</groupId>
+            <artifactId>undertow-core</artifactId>
+            <version>2.1.1.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.security.elytron-web</groupId>
+            <artifactId>undertow-server</artifactId>
+            <version>2.0.0.Alpha3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.michaelruocco</groupId>
+            <artifactId>jackson-json-api</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.7.0</version>

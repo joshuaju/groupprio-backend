@@ -1,5 +1,6 @@
 package de.ccd.groupprio.domain.submission;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Submission {
@@ -11,7 +12,7 @@ public class Submission {
     }
 
     public List<PrioItem> getItems() {
-        return items;
+        return Collections.unmodifiableList(items);
     }
 
     public String getItemName(int i) {

@@ -19,6 +19,10 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
+    public Project getProject(long projectId) {
+        return projectRepository.get(projectId);
+    }
+
     public WeightedProject getProjectState(long projectId) {
         var project = projectRepository.get(projectId);
         var weightedItems = weightRepository.findForProjectId(projectId);

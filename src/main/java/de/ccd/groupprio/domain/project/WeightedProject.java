@@ -2,6 +2,7 @@ package de.ccd.groupprio.domain.project;
 
 import de.ccd.groupprio.domain.prioritization.WeightedItem;
 
+import java.util.Collections;
 import java.util.List;
 
 public class WeightedProject {
@@ -19,6 +20,6 @@ public class WeightedProject {
     }
 
     public List<WeightedItem> getWeightedItems() {
-        return weightedItems;
+        return Collections.unmodifiableList(weightedItems);
     }
 }

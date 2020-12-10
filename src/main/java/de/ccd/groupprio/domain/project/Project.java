@@ -1,5 +1,7 @@
 package de.ccd.groupprio.domain.project;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 public class Project {
@@ -18,6 +20,6 @@ public class Project {
     }
 
     public Set<String> getItems() {
-        return items;
+        return Collections.unmodifiableSet(items);
     }
 }
