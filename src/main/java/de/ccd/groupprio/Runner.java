@@ -16,8 +16,6 @@ public class Runner {
 
     public static void main(String[] args) {
         ProjectRepository projectRepository = new ProjectRepositoryMem();
-        projectRepository.save(new Project("Foobar", Set.of("F", "oo", "B", "a", "r")));
-
         WeightRepository weightRepository = new WeightRepositoryMem();
         SubmissionRepository submissionRepository = new SubmissionRepositoryMem();
         var app = new App(projectRepository, weightRepository, submissionRepository);
