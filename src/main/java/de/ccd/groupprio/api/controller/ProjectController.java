@@ -22,9 +22,9 @@ public class ProjectController {
     public void createProject(HttpServerExchange exchange) {
         var body = Exchange.jsonBody(exchange);
         var title = body.get("title").asText();
-        var items = JsonBody.stringList(body.get("items"));
+        var items = JsonBody.stringSet(body.get("items"));
 
-        long id = projectService.createProject(title, Set.copyOf(items));
+        long id = projectService.createProject(title, items);
 
         Exchange.sendJson(exchange, Map.of("id", id));
     }
