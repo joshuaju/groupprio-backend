@@ -1,10 +1,10 @@
 package de.ccd.groupprio.domain.prioritization;
 
-import java.util.TreeSet;
+import java.util.List;
 
 public interface WeightRepository {
 
-    TreeSet<WeightedItem> findForProjectId(long projectId);
+    List<WeightedItem> findForProjectId(long projectId);
 
-    void save(long projectId, TreeSet<WeightedItem> items);
+    void save(long projectId, List<WeightedItem> items);
 }

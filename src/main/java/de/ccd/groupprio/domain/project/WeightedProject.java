@@ -2,14 +2,14 @@ package de.ccd.groupprio.domain.project;
 
 import de.ccd.groupprio.domain.prioritization.WeightedItem;
 
-import java.util.TreeSet;
+import java.util.List;
 
 public class WeightedProject {
 
     private final String title;
-    private final TreeSet<WeightedItem> weightedItems;
+    private final List<WeightedItem> weightedItems;
 
-    public WeightedProject(String title, TreeSet<WeightedItem> weightedItems) {
+    public WeightedProject(String title, List<WeightedItem> weightedItems) {
         this.title = title;
         this.weightedItems = weightedItems;
     }
@@ -18,7 +18,7 @@ public class WeightedProject {
         return title;
     }
 
-    public TreeSet<WeightedItem> getWeightedItems() {
+    public List<WeightedItem> getWeightedItems() {
         return weightedItems;
     }
 }

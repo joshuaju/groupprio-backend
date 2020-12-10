@@ -1,10 +1,17 @@
 package de.ccd.groupprio.domain.submission;
 
-import java.util.TreeSet;
+import java.util.List;
 
 public class SubmissionService {
 
-    public void submit(long projectId, TreeSet<PrioItem> items) {
-        // TODO
+    private final SubmissionRepository submissionRepository;
+
+    public SubmissionService(SubmissionRepository submissionRepository) {
+        this.submissionRepository = submissionRepository;
+    }
+
+    public void submit(long projectId, List<PrioItem> items) {
+        Submission submission = new Submission(items);
+        submissionRepository.save(projectId, submission);
     }
 }

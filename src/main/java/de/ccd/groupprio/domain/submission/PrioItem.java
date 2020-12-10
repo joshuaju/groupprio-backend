@@ -1,6 +1,6 @@
 package de.ccd.groupprio.domain.submission;
 
-public class PrioItem {
+public class PrioItem implements Comparable<PrioItem> {
 
     private final String name;
 
@@ -10,5 +10,10 @@ public class PrioItem {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public int compareTo(PrioItem o) {
+        return this.name.compareTo(o.name);
     }
 }
