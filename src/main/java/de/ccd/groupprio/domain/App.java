@@ -9,7 +9,7 @@ import de.ccd.groupprio.domain.submission.SubmissionService;
 import lombok.Getter;
 
 @Getter
-public class App {
+public class App { // TODO remove App, move code to main
 
     private final SubmissionService submissionService;
     private final PrioritizationService prioritizationService;

@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentMap;
 
 public class WeightRepositoryMem implements WeightRepository {
 
-    private Map<Long, List<WeightedItem>> weights = new HashMap<>();
+    private final Map<Long, List<WeightedItem>> weights = new HashMap<>();
 
     @Override
     public List<WeightedItem> findForProjectId(long projectId) {

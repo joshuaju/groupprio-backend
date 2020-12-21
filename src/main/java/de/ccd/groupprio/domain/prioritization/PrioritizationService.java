@@ -19,13 +19,13 @@ public class PrioritizationService {
         this.weightRepository = weightRepository;
     }
 
-    public void calcPriorities(long projectId) {
+    public void calcPriorities(long projectId) { // TODO move to SubmissionService to get rid of dependencies
         var submissions = submissionRepository.findForProjectId(projectId);
         var weightedItems = averageSubmissions(submissions);
         weightRepository.save(projectId, weightedItems);
     }
 
-    static List<WeightedItem> averageSubmissions(List<Submission> submissions) {
+    static List<WeightedItem> averageSubmissions(List<Submission> submissions) { // TODO make public
         var weights = getWeights(submissions);
         var summedWeights = getSummedWeights(weights);
         return sortByWeight(summedWeights);
@@ -33,7 +33,7 @@ public class PrioritizationService {
 
     private static List<WeightedItem> sortByWeight(Map<String, Integer> weightPerItem) {
         return weightPerItem.entrySet().stream()
-                            .sorted(Map.Entry.comparingByValue())
+                            .sorted(Map.Entry.comparingByValue()) // TODO and explicitly sort by key (name)
                             .map(Map.Entry::getKey)
                             .map(WeightedItem::new)
                             .collect(Collectors.toList());

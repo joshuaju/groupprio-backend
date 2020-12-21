@@ -2,6 +2,7 @@ package de.ccd.groupprio.domain.prioritization;
 
 import de.ccd.groupprio.domain.submission.PrioItem;
 import de.ccd.groupprio.domain.submission.Submission;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -20,15 +21,15 @@ class PrioritizationServiceTest {
     public static final WeightedItem WEIGHED_C = new WeightedItem("C");
     public static final WeightedItem WEIGHED_D = new WeightedItem("D");
 
-    @Test
+    @RepeatedTest(100)
     void average() {
-        var sub1 = new Submission(List.of(A, B, C, D));
-        var sub2 = new Submission(List.of(C, B, A, D));
-        var sub3 = new Submission(List.of(C, B, A, D));
+        var sub1 = new Submission(List.of(D, A, B, C));
+        var sub2 = new Submission(List.of(D, B, A, C));
+        //var sub3 = new Submission(List.of(C, B, A, D));
 
-        var weightedItems = PrioritizationService.averageSubmissions(List.of(sub1, sub2, sub3));
+        var weightedItems = PrioritizationService.averageSubmissions(List.of(sub1, sub2));
 
         assertThat(weightedItems)
-                  .containsExactly(WEIGHED_C, WEIGHED_B, WEIGHED_A, WEIGHED_D);
+                  .containsExactly(WEIGHED_D, WEIGHED_A, WEIGHED_B, WEIGHED_C);
     }
 }

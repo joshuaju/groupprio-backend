@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class ProjectRepositoryMem implements ProjectRepository {
 
-    private Map<Long, Project> projects = new HashMap<>();
-    private IDGenerator idGenerator = new IDGenerator();
+    private final Map<Long, Project> projects = new HashMap<>();
+    private final IDGenerator idGenerator = new IDGenerator();
 
     @Override
     public Project get(long id) {

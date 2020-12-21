@@ -7,6 +7,7 @@ import de.ccd.groupprio.domain.project.Project;
 import de.ccd.groupprio.domain.project.ProjectService;
 import de.ccd.groupprio.domain.project.WeightedProject;
 import io.undertow.server.HttpServerExchange;
+import io.undertow.util.HttpString;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
