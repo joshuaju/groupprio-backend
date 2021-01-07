@@ -1,9 +1,12 @@
 package de.ccd.groupprio.api;
 
+import com.sun.net.httpserver.HttpServer;
 import de.ccd.groupprio.api.controller.ProjectController;
 import de.ccd.groupprio.api.controller.SubmissionController;
+import de.ccd.groupprio.api.util.CorsHandler;
 import de.ccd.groupprio.domain.App;
 import io.undertow.Undertow;
+import io.undertow.server.HttpHandler;
 import io.undertow.server.RoutingHandler;
 import io.undertow.server.handlers.BlockingHandler;
 
@@ -29,18 +32,15 @@ public class Server {
 
     private RoutingHandler routes() {
         return new RoutingHandler()
-                .post("project/",
-                        new BlockingHandler(projectController::createProject))
-                .get("project/{id}",
-                        new BlockingHandler(projectController::getProject))
-                .get("project/{id}/prioritization",
-                        new BlockingHandler(projectController::getProjectState))
-                .get("project/{id}/items",
-                        new BlockingHandler(projectController::getProject))
-                .post("project/{id}/submission",
-                        new BlockingHandler(submissionController::submit))
-                .put("project/{id}/submission/{subId}",
-                        new BlockingHandler(exchange -> { /* TODO */ }));
+                         .post("project/", wrap(projectController::createProject))
+                         .get("project/{id}", wrap(projectController::getProject))
+                         .get("project/{id}/prioritization", wrap(projectController::getProjectState))
+                         .get("project/{id}/items", wrap(projectController::getProject))
+                         .post("project/{id}/submission", wrap(submissionController::submit))
+                         .put("project/{id}/submission/{subId}", wrap(exchange -> { /* TODO */ }));
     }
 
+    private static HttpHandler wrap(HttpHandler handler) {
+        return new CorsHandler(new BlockingHandler(handler));
+    }
 }
