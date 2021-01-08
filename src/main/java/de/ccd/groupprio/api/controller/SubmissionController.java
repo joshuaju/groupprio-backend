@@ -1,30 +1,26 @@
 package de.ccd.groupprio.api.controller;
 
-import de.ccd.groupprio.api.util.Exchange;
-import de.ccd.groupprio.api.util.JsonBody;
-import de.ccd.groupprio.domain.submission.PrioItem;
+import de.ccd.groupprio.api.dto.PrioDto;
 import de.ccd.groupprio.domain.submission.SubmissionService;
-import io.undertow.server.HttpServerExchange;
-import io.undertow.util.StatusCodes;
-import lombok.RequiredArgsConstructor;
 
-import java.util.stream.Collectors;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Response;
 
-@RequiredArgsConstructor
+@Path("/submission")
 public class SubmissionController {
 
     private final SubmissionService submissionService;
 
-    public void submit(HttpServerExchange exchange) {
-        var id = Long.parseLong(Exchange.pathParam(exchange, "id"));
+    public SubmissionController(SubmissionService submissionService) {
+        this.submissionService = submissionService;
+    }
 
-        var body = Exchange.jsonBody(exchange);
-        var items = JsonBody.stringList(body.get("items")).stream()
-                .map(PrioItem::new)
-                .collect(Collectors.toList());
-
-        submissionService.submitWithRecalc(id, items);
-
-        exchange.setStatusCode(StatusCodes.OK);
+    @POST
+    @Path("/{id}")
+    public Response submit(@PathParam("id") long id, PrioDto prio) {
+        submissionService.submitWithRecalc(id, prio.items);
+        return Response.ok().build();
     }
 }
