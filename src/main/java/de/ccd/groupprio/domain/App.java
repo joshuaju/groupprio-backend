@@ -21,4 +21,11 @@ public class App { // TODO remove App, move code to main
         submissionService = new SubmissionService(prioritizationService, submissionRepository);
     }
 
+    public ProjectService getProjectService() {
+        return projectService;
+    }
+
+    public SubmissionService getSubmissionService() {
+        return submissionService;
+    }
 }

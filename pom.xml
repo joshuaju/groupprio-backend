@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -20,7 +20,16 @@
                     <target>11</target>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.0</version>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
@@ -28,13 +37,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.10</version>
-        </dependency>
-
-        <!-- server -->
-        <dependency>
-            <groupId>io.undertow</groupId>
-            <artifactId>undertow-core</artifactId>
-            <version>2.1.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.wildfly.security.elytron-web</groupId>
@@ -51,7 +53,16 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>2.11.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-servlet-initializer</artifactId>
+            <version>4.5.8.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-client</artifactId>
+            <version>4.5.8.Final</version>
+        </dependency>
         <!-- Testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
