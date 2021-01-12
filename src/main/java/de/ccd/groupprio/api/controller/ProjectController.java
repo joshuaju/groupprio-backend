@@ -6,46 +6,48 @@ import de.ccd.groupprio.domain.project.Project;
 import de.ccd.groupprio.domain.project.ProjectService;
 import de.ccd.groupprio.domain.project.WeightedProject;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-@Path("/project")
+import static de.ccd.groupprio.api.controller.JsonUtil.json;
+import static spark.Spark.get;
+import static spark.Spark.post;
+
 public class ProjectController {
 
     private final ProjectService projectService;
 
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
+        createProject();
+        getProject();
+        getProjectState();
     }
 
-    @POST
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response createProject(ProjectDto project) {
-        long id = projectService.createProject(project.title, project.items);
-        return Response.ok(id).build();
+    private void getProjectState() {
+        get("/project/:id/prioritization", (req, res) -> {
+            long id = Long.parseLong(req.params(":id"));
+            WeightedProject projectState = this.projectService.getProjectState(id);
 
+            return projectState.getWeightedItems().stream()
+                    .map(WeightedItem::getName)
+                    .collect(Collectors.toList());
+        }, json());
     }
 
-    @GET
-    @Path("/${id}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Project getProject(@PathParam("id") long id) {
-        Project project = projectService.getProject(id);
-        return project;
+    private void getProject() {
+        get("/project/:id", (req, res) -> {
+            long id = Long.parseLong(req.params(":id"));
+            Project project = this.projectService.getProject(id);
+            return project;
+        }, json());
     }
 
-    @GET
-    @Path("/${id}/prioritization")
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<String> getProjectState(@PathParam("id") long id) {
-        WeightedProject projectState = projectService.getProjectState(id);
-
-        var items = projectState.getWeightedItems().stream()
-                .map(WeightedItem::getName)
-                .collect(Collectors.toList());
-        return items;
+    private void createProject() {
+        post("/project", (req, res) -> {
+            ProjectDto projectDto = JsonUtil.fromJson(req.body(), ProjectDto.class);
+            long id = this.projectService.createProject(projectDto.title, projectDto.items);
+            return Map.of("id", id);
+        }, json());
     }
 }

@@ -20,16 +20,6 @@
                     <target>11</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.2.0</version>
-            </plugin>
         </plugins>
     </build>
     <dependencies>
@@ -39,29 +29,14 @@
             <version>1.18.10</version>
         </dependency>
         <dependency>
-            <groupId>org.wildfly.security.elytron-web</groupId>
-            <artifactId>undertow-server</artifactId>
-            <version>2.0.0.Alpha3</version>
+            <groupId>com.sparkjava</groupId>
+            <artifactId>spark-core</artifactId>
+            <version>2.9.3</version>
         </dependency>
         <dependency>
-            <groupId>com.github.michaelruocco</groupId>
-            <artifactId>jackson-json-api</artifactId>
-            <version>2.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.11.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-servlet-initializer</artifactId>
-            <version>4.5.8.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-client</artifactId>
-            <version>4.5.8.Final</version>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.6</version>
         </dependency>
         <!-- Testing -->
         <dependency>
