@@ -1,11 +1,13 @@
 package de.ccd.groupprio.api.controller;
 
 import de.ccd.groupprio.api.dto.ProjectDto;
+import de.ccd.groupprio.api.dto.ProjectStateDto;
 import de.ccd.groupprio.domain.prioritization.WeightedItem;
 import de.ccd.groupprio.domain.project.Project;
 import de.ccd.groupprio.domain.project.ProjectService;
 import de.ccd.groupprio.domain.project.WeightedProject;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -29,9 +31,10 @@ public class ProjectController {
             long id = Long.parseLong(req.params(":id"));
             WeightedProject projectState = this.projectService.getProjectState(id);
 
-            return projectState.getWeightedItems().stream()
+            List<String> weightedItems = projectState.getWeightedItems().stream()
                     .map(WeightedItem::getName)
                     .collect(Collectors.toList());
+            return new ProjectStateDto(projectState.getTitle(),weightedItems);
         }, json());
     }
 
