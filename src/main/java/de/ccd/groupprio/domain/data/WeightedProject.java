@@ -1,9 +1,9 @@
-package de.ccd.groupprio.domain.project;
+package de.ccd.groupprio.domain.data;
 
-import de.ccd.groupprio.domain.prioritization.WeightedItem;
+import de.ccd.groupprio.domain.data.WeightedItem;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class WeightedProject {
 
@@ -19,7 +19,9 @@ public class WeightedProject {
         return title;
     }
 
-    public List<WeightedItem> getWeightedItems() {
-        return Collections.unmodifiableList(weightedItems);
+    public List<String> getItems() {
+        return  this.weightedItems.stream()
+                .map(WeightedItem::getName)
+                .collect(Collectors.toList());
     }
 }

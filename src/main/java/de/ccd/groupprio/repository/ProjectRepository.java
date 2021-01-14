@@ -1,4 +1,6 @@
-package de.ccd.groupprio.domain.project;
+package de.ccd.groupprio.repository;
+
+import de.ccd.groupprio.domain.data.Project;
 
 public interface ProjectRepository {
 

@@ -1,4 +1,6 @@
-package de.ccd.groupprio.domain.submission;
+package de.ccd.groupprio.repository;
+
+import de.ccd.groupprio.domain.data.Submission;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,9 +1,10 @@
-package de.ccd.groupprio.domain.prioritization;
+package de.ccd.groupprio.repository;
+
+import de.ccd.groupprio.domain.data.WeightedItem;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
 
 public class WeightRepositoryMem implements WeightRepository {
 

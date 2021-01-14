@@ -1,15 +1,13 @@
-package de.ccd.groupprio.domain.prioritization;
+package de.ccd.groupprio.domain.data;
 
-import de.ccd.groupprio.domain.submission.PrioItem;
-import de.ccd.groupprio.domain.submission.Submission;
+import de.ccd.groupprio.domain.logic.Prioritization;
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-class PrioritizationServiceTest {
+class PrioritizationTest {
 
     public static final PrioItem A = new PrioItem("A");
     public static final PrioItem B = new PrioItem("B");
@@ -27,7 +25,7 @@ class PrioritizationServiceTest {
         var sub2 = new Submission(List.of(D, B, A, C));
         //var sub3 = new Submission(List.of(C, B, A, D));
 
-        var weightedItems = PrioritizationService.averageSubmissions(List.of(sub1, sub2));
+        var weightedItems = Prioritization.averageSubmissions(List.of(sub1, sub2));
 
         assertThat(weightedItems)
                   .containsExactly(WEIGHED_D, WEIGHED_A, WEIGHED_B, WEIGHED_C);

@@ -1,7 +1,7 @@
-package de.ccd.groupprio.domain.prioritization;
+package de.ccd.groupprio.domain.logic;
 
-import de.ccd.groupprio.domain.submission.Submission;
-import de.ccd.groupprio.domain.submission.SubmissionRepository;
+import de.ccd.groupprio.domain.data.WeightedItem;
+import de.ccd.groupprio.domain.data.Submission;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,23 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class PrioritizationService {
+public class Prioritization {
 
-    private final SubmissionRepository submissionRepository;
-    private final WeightRepository weightRepository;
-
-    public PrioritizationService(SubmissionRepository submissionRepository, WeightRepository weightRepository) {
-        this.submissionRepository = submissionRepository;
-        this.weightRepository = weightRepository;
-    }
-
-    public void calcPriorities(long projectId) { // TODO move to SubmissionService to get rid of dependencies
-        var submissions = submissionRepository.findForProjectId(projectId);
-        var weightedItems = averageSubmissions(submissions);
-        weightRepository.save(projectId, weightedItems);
-    }
-
-    static List<WeightedItem> averageSubmissions(List<Submission> submissions) { // TODO make public
+    public static List<WeightedItem> averageSubmissions(List<Submission> submissions) {
         var weights = getWeights(submissions);
         var summedWeights = getSummedWeights(weights);
         return sortByWeight(summedWeights);

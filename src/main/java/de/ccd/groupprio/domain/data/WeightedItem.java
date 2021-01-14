@@ -1,4 +1,4 @@
-package de.ccd.groupprio.domain.prioritization;
+package de.ccd.groupprio.domain.data;
 
 import java.util.Objects;
 
