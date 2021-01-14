@@ -1,4 +1,4 @@
-package de.ccd.groupprio.domain.submission;
+package de.ccd.groupprio.domain.data;
 
 public class PrioItem implements Comparable<PrioItem> {
 

@@ -1,6 +1,9 @@
-package de.ccd.groupprio.domain.project;
+package de.ccd.groupprio.integration.services;
 
-import de.ccd.groupprio.domain.prioritization.WeightRepository;
+import de.ccd.groupprio.domain.data.Project;
+import de.ccd.groupprio.domain.data.WeightedProject;
+import de.ccd.groupprio.repository.ProjectRepository;
+import de.ccd.groupprio.repository.WeightRepository;
 
 import java.util.Set;
 

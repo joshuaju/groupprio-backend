@@ -1,4 +1,4 @@
-package de.ccd.groupprio.api.dto;
+package de.ccd.groupprio.integration.api.dto;
 
 import java.util.Set;
 

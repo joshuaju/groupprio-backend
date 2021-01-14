@@ -1,4 +1,4 @@
-package de.ccd.groupprio.domain.project;
+package de.ccd.groupprio.domain.data;
 
 import java.util.Collections;
 import java.util.List;

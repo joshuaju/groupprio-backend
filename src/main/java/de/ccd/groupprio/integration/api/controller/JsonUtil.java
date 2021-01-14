@@ -1,4 +1,4 @@
-package de.ccd.groupprio.api.controller;
+package de.ccd.groupprio.integration.api.controller;
 
 import com.google.gson.Gson;
 import spark.ResponseTransformer;
