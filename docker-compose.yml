@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13.1
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+      - APP_DB_USER=groupprio
+      - APP_DB_PASS=groupprio
+      - APP_DB_NAME=groupprio
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+    ports:
+      - 5432:5432
+  backend:
+    image: groupprio-backend
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
