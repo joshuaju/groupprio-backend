@@ -20,10 +20,11 @@ public class Runner {
         SubmissionRepository submissionRepository = new SubmissionRepositoryMem();
         App app = new App(projectRepository, weightRepository, submissionRepository);
 
+        port(8080);
         enableCORS("*", "GET,OPTIONS,POST,PUT,DELETE", "Authorization,Content-Type,Link,X-Total-Count,Range");
-
         new ProjectController(app.getProjectService());
         new SubmissionController(app.getSubmissionService());
+        System.out.println("Running on 8080");
     }
 
     private static void enableCORS(final String origin, final String methods, final String headers) {
