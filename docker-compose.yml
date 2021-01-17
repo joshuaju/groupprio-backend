@@ -20,7 +20,7 @@ services:
     ports:
       - 5432:5432
   backend:
-    image: groupprio-backend
+    build: .
     ports:
       - 8080:8080
     depends_on:

@@ -7,13 +7,20 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
   GRANT ALL PRIVILEGES ON DATABASE $APP_DB_NAME TO $APP_DB_USER;
   \connect $APP_DB_NAME $APP_DB_USER
   BEGIN;
-    CREATE TABLE IF NOT EXISTS event (
-	  id CHAR(26) NOT NULL CHECK (CHAR_LENGTH(id) = 26) PRIMARY KEY,
-	  aggregate_id CHAR(26) NOT NULL CHECK (CHAR_LENGTH(aggregate_id) = 26),
-	  event_data JSON NOT NULL,
-	  version INT,
-	  UNIQUE(aggregate_id, version)
-	);
-	CREATE INDEX idx_event_aggregate_id ON event (aggregate_id);
+    CREATE TABLE IF NOT EXISTS projects (
+      project_id INT GENERATED ALWAYS AS IDENTITY,
+	    name text NOT NULL,
+      PRIMARY KEY(project_id)
+	  );
+
+	  CREATE TABLE IF NOT EXISTS items (
+	    item_id INT GENERATED ALWAYS AS IDENTITY,
+	    project_id INT,
+	    name text NOT NULL,
+	    PRIMARY KEY(item_id),
+	    CONSTRAINT fk_customer
+	      FOREIGN KEY(project_id)
+	        REFERENCES projects(project_id)
+	  );
   COMMIT;
 EOSQL
