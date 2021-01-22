@@ -1,16 +1,18 @@
 package de.ccd.groupprio;
 
+import static spark.Spark.after;
+import static spark.Spark.before;
+import static spark.Spark.options;
+
 import de.ccd.groupprio.integration.App;
 import de.ccd.groupprio.integration.api.controller.ProjectController;
 import de.ccd.groupprio.integration.api.controller.SubmissionController;
-import de.ccd.groupprio.repository.WeightRepository;
-import de.ccd.groupprio.repository.WeightRepositoryMem;
 import de.ccd.groupprio.repository.ProjectRepository;
 import de.ccd.groupprio.repository.ProjectRepositoryMem;
 import de.ccd.groupprio.repository.SubmissionRepository;
 import de.ccd.groupprio.repository.SubmissionRepositoryMem;
-
-import static spark.Spark.*;
+import de.ccd.groupprio.repository.WeightRepository;
+import de.ccd.groupprio.repository.WeightRepositoryMem;
 
 public class Runner {
 
@@ -18,6 +20,7 @@ public class Runner {
         ProjectRepository projectRepository = new ProjectRepositoryMem();
         WeightRepository weightRepository = new WeightRepositoryMem();
         SubmissionRepository submissionRepository = new SubmissionRepositoryMem();
+
         App app = new App(projectRepository, weightRepository, submissionRepository);
 
         enableCORS("*", "GET,OPTIONS,POST,PUT,DELETE", "Authorization,Content-Type,Link,X-Total-Count,Range");

@@ -1,11 +1,11 @@
 package de.ccd.groupprio.integration.services;
 
+import java.util.Set;
+
 import de.ccd.groupprio.domain.data.Project;
 import de.ccd.groupprio.domain.data.WeightedProject;
 import de.ccd.groupprio.repository.ProjectRepository;
 import de.ccd.groupprio.repository.WeightRepository;
-
-import java.util.Set;
 
 public class ProjectService {
 
@@ -17,16 +17,16 @@ public class ProjectService {
         this.weightRepository = weightRepository;
     }
 
-    public long createProject(String title, Set<String> items) {
+    public String createProject(String title, Set<String> items) {
         var project = new Project(title, items);
         return projectRepository.save(project);
     }
 
-    public Project getProject(long projectId) {
+    public Project getProject(String projectId) {
         return projectRepository.get(projectId);
     }
 
-    public WeightedProject getProjectState(long projectId) {
+    public WeightedProject getProjectState(String projectId) {
         var project = projectRepository.get(projectId);
         var weightedItems = weightRepository.findForProjectId(projectId);
         return new WeightedProject(project.getTitle(), weightedItems);

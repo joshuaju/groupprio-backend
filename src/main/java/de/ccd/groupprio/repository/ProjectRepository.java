@@ -4,7 +4,7 @@ import de.ccd.groupprio.domain.data.Project;
 
 public interface ProjectRepository {
 
-    Project get(long id);
+    Project get(String uuid);
 
-    long save(Project project);
+    String save(Project project);
 }
