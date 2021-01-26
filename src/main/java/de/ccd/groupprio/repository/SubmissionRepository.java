@@ -9,4 +9,6 @@ public interface SubmissionRepository {
     List<Submission> findForProjectId(long projectId);
 
     void save(long projectId, Submission submission);
+
+    int getSubmissionCount(long projectId);
 }

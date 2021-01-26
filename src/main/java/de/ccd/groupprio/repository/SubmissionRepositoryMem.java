@@ -21,4 +21,9 @@ public class SubmissionRepositoryMem implements SubmissionRepository {
         submissions.computeIfAbsent(projectId, id -> new ArrayList<>())
                 .add(submission);
     }
+
+    @Override
+    public int getSubmissionCount(long projectId) {
+        return findForProjectId(projectId).size();
+    }
 }
