@@ -1,0 +1,38 @@
+POST http://localhost:4567/project
+Content-Type: application/octet-stream
+
+{
+  "title": "Testproject",
+  "items": [
+    "item1",
+    "item2",
+    "item3"
+  ]
+}
+
+###
+
+GET http://localhost:4567/project/600ff9675343d4617e9b5937
+Content-Type: application/octet-stream
+
+###
+
+POST http://localhost:4567/project/600ff9675343d4617e9b5937/submission
+Content-Type: application/octet-stream
+
+{
+  "items": [
+    "item1",
+    "item2",
+    "item3"
+  ]
+}
+
+###
+
+GET http://localhost:4567/project/600ff9675343d4617e9b5937/prioritization
+Content-Type: application/octet-stream
+
+###
+
+

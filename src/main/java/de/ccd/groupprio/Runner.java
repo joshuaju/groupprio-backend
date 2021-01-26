@@ -4,26 +4,43 @@ import static spark.Spark.after;
 import static spark.Spark.before;
 import static spark.Spark.options;
 
+import java.net.UnknownHostException;
+
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
+
 import de.ccd.groupprio.integration.App;
 import de.ccd.groupprio.integration.api.controller.ProjectController;
 import de.ccd.groupprio.integration.api.controller.SubmissionController;
 import de.ccd.groupprio.repository.ProjectRepository;
-import de.ccd.groupprio.repository.ProjectRepositoryMem;
+import de.ccd.groupprio.repository.ProjectRepositoryMongo;
 import de.ccd.groupprio.repository.SubmissionRepository;
-import de.ccd.groupprio.repository.SubmissionRepositoryMem;
+import de.ccd.groupprio.repository.SubmissionRepositoryMongo;
 import de.ccd.groupprio.repository.WeightRepository;
-import de.ccd.groupprio.repository.WeightRepositoryMem;
+import de.ccd.groupprio.repository.WeightRepositoryMongo;
+import spark.Spark;
 
 public class Runner {
 
     public static void main(String[] args) {
-        ProjectRepository projectRepository = new ProjectRepositoryMem();
-        WeightRepository weightRepository = new WeightRepositoryMem();
-        SubmissionRepository submissionRepository = new SubmissionRepositoryMem();
+        MongoClient mongoClient;
+        try {
+            mongoClient = new MongoClient();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        DB groupprio = mongoClient.getDB("groupprio");
+        ProjectRepository projectRepository = new ProjectRepositoryMongo(groupprio);
+        WeightRepository weightRepository = new WeightRepositoryMongo(groupprio);
+        SubmissionRepository submissionRepository = new SubmissionRepositoryMongo(groupprio);
 
         App app = new App(projectRepository, weightRepository, submissionRepository);
 
         enableCORS("*", "GET,OPTIONS,POST,PUT,DELETE", "Authorization,Content-Type,Link,X-Total-Count,Range");
+
+        int port = Spark.port();
 
         new ProjectController(app.getProjectService());
         new SubmissionController(app.getSubmissionService());
