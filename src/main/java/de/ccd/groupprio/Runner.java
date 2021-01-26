@@ -39,9 +39,7 @@ public class Runner {
         App app = new App(projectRepository, weightRepository, submissionRepository);
 
         enableCORS("*", "GET,OPTIONS,POST,PUT,DELETE", "Authorization,Content-Type,Link,X-Total-Count,Range");
-
-        int port = Spark.port();
-
+        
         new ProjectController(app.getProjectService());
         new SubmissionController(app.getSubmissionService());
     }
