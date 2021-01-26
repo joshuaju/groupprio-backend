@@ -29,7 +29,7 @@ public class ProjectController {
 
             WeightedProject weightedProject = this.projectService.getProjectState(id);
 
-            return new ProjectStateDto(weightedProject.getTitle(),weightedProject.getItems());
+            return new ProjectStateDto(weightedProject.getTitle(),weightedProject.getItems(), weightedProject.getSubmissionCount());
         }, json());
     }
 
