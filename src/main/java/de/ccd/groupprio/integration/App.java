@@ -14,7 +14,7 @@ public class App { // TODO remove App, move code to main
     private final ProjectService projectService;
 
     public App(ProjectRepository projectRepository, WeightRepository weightRepository, SubmissionRepository submissionRepository) {
-        projectService = new ProjectService(projectRepository, weightRepository);
+        projectService = new ProjectService(projectRepository, weightRepository, submissionRepository);
         submissionService = new SubmissionService(submissionRepository, weightRepository);
     }
 

@@ -19,4 +19,9 @@ public class SubmissionRepositoryMem implements SubmissionRepository {
     public void save(String projectId, Submission submission) {
         submissions.computeIfAbsent(projectId, id -> new ArrayList<>()).add(submission);
     }
+
+    @Override
+    public int getSubmissionCount(long projectId) {
+        return findForProjectId(projectId).size();
+    }
 }
