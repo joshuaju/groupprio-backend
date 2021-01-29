@@ -21,7 +21,7 @@ public class SubmissionRepositoryMem implements SubmissionRepository {
     }
 
     @Override
-    public int getSubmissionCount(long projectId) {
+    public int getSubmissionCount(String projectId) {
         return findForProjectId(projectId).size();
     }
 }

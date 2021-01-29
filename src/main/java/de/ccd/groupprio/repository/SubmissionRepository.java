@@ -10,5 +10,5 @@ public interface SubmissionRepository {
 
     void save(String projectId, Submission submission);
 
-    int getSubmissionCount(long projectId);
+    int getSubmissionCount(String projectId);
 }

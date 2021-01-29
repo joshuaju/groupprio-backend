@@ -40,4 +40,9 @@ public class SubmissionRepositoryMongo implements SubmissionRepository {
         DBObject dbSubmission = new BasicDBObject("project_id", projectId).append("prio_items", prioList);
         submissionCollection.insert(dbSubmission);
     }
+
+    @Override
+    public int getSubmissionCount(String projectId) {
+        return findForProjectId(projectId).size();
+    }
 }

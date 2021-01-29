@@ -1,9 +1,5 @@
 package de.ccd.groupprio;
 
-import static spark.Spark.after;
-import static spark.Spark.before;
-import static spark.Spark.options;
-
 import java.net.UnknownHostException;
 
 import com.mongodb.DB;
@@ -19,6 +15,8 @@ import de.ccd.groupprio.repository.SubmissionRepositoryMongo;
 import de.ccd.groupprio.repository.WeightRepository;
 import de.ccd.groupprio.repository.WeightRepositoryMongo;
 import spark.Spark;
+
+import static spark.Spark.*;
 
 public class Runner {
 
