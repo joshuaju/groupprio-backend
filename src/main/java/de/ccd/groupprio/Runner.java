@@ -1,9 +1,6 @@
 package de.ccd.groupprio;
 
-import java.net.UnknownHostException;
-
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
+import com.mongodb.*;
 
 import de.ccd.groupprio.integration.App;
 import de.ccd.groupprio.integration.api.controller.ProjectController;
@@ -14,25 +11,17 @@ import de.ccd.groupprio.repository.SubmissionRepository;
 import de.ccd.groupprio.repository.SubmissionRepositoryMongo;
 import de.ccd.groupprio.repository.WeightRepository;
 import de.ccd.groupprio.repository.WeightRepositoryMongo;
-import spark.Spark;
+import lombok.SneakyThrows;
 
 import static spark.Spark.*;
 
 public class Runner {
 
     public static void main(String[] args) {
-        MongoClient mongoClient;
-        try {
-            mongoClient = new MongoClient();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        DB groupprio = mongoClient.getDB("groupprio");
-        ProjectRepository projectRepository = new ProjectRepositoryMongo(groupprio);
-        WeightRepository weightRepository = new WeightRepositoryMongo(groupprio);
-        SubmissionRepository submissionRepository = new SubmissionRepositoryMongo(groupprio);
+        DB groupprioDB = connectMongoDb();
+        ProjectRepository projectRepository = new ProjectRepositoryMongo(groupprioDB);
+        WeightRepository weightRepository = new WeightRepositoryMongo(groupprioDB);
+        SubmissionRepository submissionRepository = new SubmissionRepositoryMongo(groupprioDB);
 
         App app = new App(projectRepository, weightRepository, submissionRepository);
 
@@ -41,6 +30,15 @@ public class Runner {
         new ProjectController(app.getProjectService());
         new SubmissionController(app.getSubmissionService());
         System.out.println("Running on 8080");
+    }
+
+    @SneakyThrows
+    private static DB connectMongoDb() {
+        var mongoHost = System.getenv().getOrDefault("MONGO_HOST", "127.0.0.1");
+        System.err.println("!!! MongoHost=" + mongoHost);
+        ServerAddress addr = new ServerAddress(mongoHost);
+        var mongoClient = new MongoClient(addr);
+        return mongoClient.getDB("groupprio");
     }
 
     private static void enableCORS(final String origin, final String methods, final String headers) {
