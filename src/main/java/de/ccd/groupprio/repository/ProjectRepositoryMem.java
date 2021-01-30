@@ -1,23 +1,23 @@
 package de.ccd.groupprio.repository;
 
-import de.ccd.groupprio.domain.data.Project;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import de.ccd.groupprio.domain.data.Project;
+
 public class ProjectRepositoryMem implements ProjectRepository {
 
-    private final Map<Long, Project> projects = new HashMap<>();
+    private final Map<String, Project> projects = new HashMap<>();
     private final IDGenerator idGenerator = new IDGenerator();
 
     @Override
-    public Project get(long id) {
+    public Project get(String id) {
         return projects.getOrDefault(id, null);
     }
 
     @Override
-    public long save(Project project) {
-        long id = idGenerator.next();
+    public String save(Project project) {
+        String id = idGenerator.next();
         projects.put(id, project);
         return id;
     }
@@ -25,8 +25,8 @@ public class ProjectRepositoryMem implements ProjectRepository {
     private static class IDGenerator {
         static long nextId = 0L;
 
-        private long next() {
-            return nextId++;
+        private String next() {
+            return String.format("%d", nextId++);
         }
     }
 }

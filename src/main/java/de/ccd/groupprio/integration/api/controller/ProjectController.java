@@ -1,16 +1,16 @@
 package de.ccd.groupprio.integration.api.controller;
 
-import de.ccd.groupprio.integration.api.dto.ProjectDto;
-import de.ccd.groupprio.integration.api.dto.ProjectStateDto;
-import de.ccd.groupprio.domain.data.Project;
-import de.ccd.groupprio.integration.services.ProjectService;
-import de.ccd.groupprio.domain.data.WeightedProject;
-
-import java.util.Map;
-
 import static de.ccd.groupprio.integration.api.controller.JsonUtil.json;
 import static spark.Spark.get;
 import static spark.Spark.post;
+
+import java.util.Map;
+
+import de.ccd.groupprio.domain.data.Project;
+import de.ccd.groupprio.domain.data.WeightedProject;
+import de.ccd.groupprio.integration.api.dto.ProjectDto;
+import de.ccd.groupprio.integration.api.dto.ProjectStateDto;
+import de.ccd.groupprio.integration.services.ProjectService;
 
 public class ProjectController {
 
@@ -25,7 +25,7 @@ public class ProjectController {
 
     private void getProjectState() {
         get("/project/:id/prioritization", (req, res) -> {
-            long id = Long.parseLong(req.params(":id"));
+            String id = req.params(":id");
 
             WeightedProject weightedProject = this.projectService.getProjectState(id);
 
@@ -35,11 +35,11 @@ public class ProjectController {
 
     private void getProject() {
         get("/project/:id", (req, res) -> {
-            long id = Long.parseLong(req.params(":id"));
+            String id = req.params(":id");
 
             Project project = this.projectService.getProject(id);
 
-            return new ProjectDto(project.getTitle(),project.getItems());
+            return new ProjectDto(project.getTitle(), project.getItems());
         }, json());
     }
 
@@ -47,7 +47,7 @@ public class ProjectController {
         post("/project", (req, res) -> {
             ProjectDto projectDto = JsonUtil.fromJson(req.body(), ProjectDto.class);
 
-            long id = this.projectService.createProject(projectDto.title, projectDto.items);
+            String id = this.projectService.createProject(projectDto.title, projectDto.items);
 
             return Map.of("id", id);
         }, json());
