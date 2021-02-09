@@ -4,7 +4,7 @@ import spark.Request;
 
 public class HeaderFields {
 
-    public static final String CLIENT_ID = "clientID";
+    public static final String CLIENT_ID = "clientId";
 
     public static String getOrFail(Request request, String header) {
         var value = request.headers(header);

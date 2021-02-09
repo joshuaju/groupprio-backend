@@ -1,9 +1,9 @@
 package de.ccd.groupprio.repository;
 
+import de.ccd.groupprio.domain.data.Project;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import de.ccd.groupprio.domain.data.Project;
 
 public class ProjectRepositoryMem implements ProjectRepository {
 

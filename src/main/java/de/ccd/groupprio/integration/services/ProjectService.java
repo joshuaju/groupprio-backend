@@ -1,12 +1,12 @@
 package de.ccd.groupprio.integration.services;
 
-import java.util.Set;
-
 import de.ccd.groupprio.domain.data.Project;
 import de.ccd.groupprio.domain.data.WeightedProject;
 import de.ccd.groupprio.repository.ProjectRepository;
 import de.ccd.groupprio.repository.SubmissionRepository;
 import de.ccd.groupprio.repository.WeightRepository;
+
+import java.util.Set;
 
 public class ProjectService {
 

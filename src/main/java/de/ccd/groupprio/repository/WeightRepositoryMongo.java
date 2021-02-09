@@ -1,17 +1,12 @@
 package de.ccd.groupprio.repository;
 
-import static de.ccd.groupprio.repository.mapper.WeightMapperMongo.mapToBasicDBList;
-import static de.ccd.groupprio.repository.mapper.WeightMapperMongo.mapToWeightedItemList;
+import com.mongodb.*;
+import de.ccd.groupprio.domain.data.WeightedItem;
 
 import java.util.List;
 
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-
-import de.ccd.groupprio.domain.data.WeightedItem;
+import static de.ccd.groupprio.repository.mapper.WeightMapperMongo.mapToBasicDBList;
+import static de.ccd.groupprio.repository.mapper.WeightMapperMongo.mapToWeightedItemList;
 
 public class WeightRepositoryMongo implements WeightRepository {
     private final DBCollection weightCollection;

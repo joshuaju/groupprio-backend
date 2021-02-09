@@ -1,7 +1,7 @@
 package de.ccd.groupprio.domain.logic;
 
-import de.ccd.groupprio.domain.data.WeightedItem;
 import de.ccd.groupprio.domain.data.Submission;
+import de.ccd.groupprio.domain.data.WeightedItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;

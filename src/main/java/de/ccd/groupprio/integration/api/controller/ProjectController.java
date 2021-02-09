@@ -1,16 +1,16 @@
 package de.ccd.groupprio.integration.api.controller;
 
-import static de.ccd.groupprio.integration.api.controller.JsonUtil.json;
-import static spark.Spark.get;
-import static spark.Spark.post;
-
-import java.util.Map;
-
 import de.ccd.groupprio.domain.data.Project;
 import de.ccd.groupprio.domain.data.WeightedProject;
 import de.ccd.groupprio.integration.api.dto.ProjectDto;
 import de.ccd.groupprio.integration.api.dto.ProjectStateDto;
 import de.ccd.groupprio.integration.services.ProjectService;
+
+import java.util.Map;
+
+import static de.ccd.groupprio.integration.api.controller.JsonUtil.json;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 public class ProjectController {
 

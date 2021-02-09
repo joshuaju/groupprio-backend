@@ -1,15 +1,13 @@
 package de.ccd.groupprio.repository;
 
-import static de.ccd.groupprio.repository.mapper.ProjectMapperMongo.mapToProject;
-
-import org.bson.types.ObjectId;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-
 import de.ccd.groupprio.domain.data.Project;
+import org.bson.types.ObjectId;
+
+import static de.ccd.groupprio.repository.mapper.ProjectMapperMongo.mapToProject;
 
 public class ProjectRepositoryMongo implements ProjectRepository {
 
