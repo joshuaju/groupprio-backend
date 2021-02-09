@@ -39,7 +39,7 @@ public class ProjectController {
 
             Project project = this.projectService.getProject(id);
 
-            return new ProjectDto(project.getTitle(), project.getItems());
+            return new ProjectDto(project.getTitle(),project.getItems(),project.isMultipleSubmissionsAllowed());
         }, json());
     }
 
@@ -47,7 +47,7 @@ public class ProjectController {
         post("/project", (req, res) -> {
             ProjectDto projectDto = JsonUtil.fromJson(req.body(), ProjectDto.class);
 
-            String id = this.projectService.createProject(projectDto.title, projectDto.items);
+            String id = this.projectService.createProject(projectDto.title, projectDto.items,projectDto.isMultipleSubmissionsAllowed);
 
             return Map.of("id", id);
         }, json());

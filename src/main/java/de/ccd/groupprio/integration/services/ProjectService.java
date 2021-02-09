@@ -20,8 +20,8 @@ public class ProjectService {
         this.submissionRepository = submissionRepository;
     }
 
-    public String createProject(String title, Set<String> items) {
-        var project = new Project(title, items);
+    public String createProject(String title, Set<String> items, boolean multipleSubmissionsAllowed) {
+        var project = new Project(title, items,multipleSubmissionsAllowed);
         return projectRepository.save(project);
     }
 
