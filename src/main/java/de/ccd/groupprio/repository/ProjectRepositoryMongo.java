@@ -29,7 +29,7 @@ public class ProjectRepositoryMongo implements ProjectRepository {
 
     @Override
     public String save(Project project) {
-        DBObject dbProject = new BasicDBObject("title", project.getTitle()).append("items", project.getItems());
+        DBObject dbProject = new BasicDBObject("title", project.getTitle()).append("items", project.getItems()).append("isMultiSubmissionsAllowed", project.isMultipleSubmissionsAllowed());
         projectCollection.insert(dbProject);
         ObjectId id = (ObjectId) dbProject.get("_id");
         return id.toString();
