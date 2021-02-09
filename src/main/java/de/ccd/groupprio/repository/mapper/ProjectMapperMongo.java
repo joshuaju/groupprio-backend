@@ -16,7 +16,8 @@ public class ProjectMapperMongo {
     public static Project mapToProject(DBObject dbProject) {
         String title = (String) dbProject.get("title");
         BasicDBList itemList = (BasicDBList) dbProject.get("items");
+        boolean isMultiSubmissionAllowed = (boolean) dbProject.get("isMultiSubmissionAllowed");
         Set<String> items = itemList.stream().map(Object::toString).collect(Collectors.toSet());
-        return new Project(title, items);
+        return new Project(title, items, isMultiSubmissionAllowed);
     }
 }
