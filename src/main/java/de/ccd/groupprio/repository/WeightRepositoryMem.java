@@ -1,10 +1,10 @@
 package de.ccd.groupprio.repository;
 
+import de.ccd.groupprio.domain.data.WeightedItem;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import de.ccd.groupprio.domain.data.WeightedItem;
 
 public class WeightRepositoryMem implements WeightRepository {
 

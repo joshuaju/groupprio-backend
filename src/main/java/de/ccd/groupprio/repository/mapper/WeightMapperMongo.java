@@ -1,12 +1,11 @@
 package de.ccd.groupprio.repository.mapper;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
-
 import de.ccd.groupprio.domain.data.WeightedItem;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class WeightMapperMongo {
 

@@ -5,6 +5,9 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import de.ccd.groupprio.domain.data.Project;
+import org.bson.types.ObjectId;
+
+import static de.ccd.groupprio.repository.mapper.ProjectMapperMongo.mapToProject;
 
 import java.util.ArrayList;
 import java.util.List;

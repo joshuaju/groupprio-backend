@@ -1,8 +1,8 @@
 package de.ccd.groupprio.repository;
 
-import java.util.List;
-
 import de.ccd.groupprio.domain.data.WeightedItem;
+
+import java.util.List;
 
 public interface WeightRepository {
 

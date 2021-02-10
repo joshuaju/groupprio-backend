@@ -1,16 +1,12 @@
 package de.ccd.groupprio;
 
-import com.mongodb.*;
-
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
 import de.ccd.groupprio.integration.App;
 import de.ccd.groupprio.integration.api.controller.ProjectController;
 import de.ccd.groupprio.integration.api.controller.SubmissionController;
-import de.ccd.groupprio.repository.ProjectRepository;
-import de.ccd.groupprio.repository.ProjectRepositoryMongo;
-import de.ccd.groupprio.repository.SubmissionRepository;
-import de.ccd.groupprio.repository.SubmissionRepositoryMongo;
-import de.ccd.groupprio.repository.WeightRepository;
-import de.ccd.groupprio.repository.WeightRepositoryMongo;
+import de.ccd.groupprio.repository.*;
 import lombok.SneakyThrows;
 
 import static spark.Spark.*;
@@ -29,13 +25,13 @@ public class Runner {
         enableCORS("*", "GET,OPTIONS,POST,PUT,DELETE", "Authorization,Content-Type,Link,X-Total-Count,Range");
         new ProjectController(app.getProjectService());
         new SubmissionController(app.getSubmissionService());
-        System.out.println("Running on 8080");
+        System.out.println("Running server on localhost:8080/");
     }
 
     @SneakyThrows
     private static DB connectMongoDb() {
         var mongoHost = System.getenv().getOrDefault("MONGO_HOST", "127.0.0.1");
-        System.err.println("!!! MongoHost=" + mongoHost);
+        System.out.println("Connecting to mongoDB at " + mongoHost);
         ServerAddress addr = new ServerAddress(mongoHost);
         var mongoClient = new MongoClient(addr);
         return mongoClient.getDB("groupprio");

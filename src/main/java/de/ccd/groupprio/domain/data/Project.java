@@ -10,7 +10,6 @@ public class Project {
     private final String title;
     private final Set<String> items;
     private final String clientId;
-
     private final boolean isMultipleSubmissionsAllowed;
 
     public Project(

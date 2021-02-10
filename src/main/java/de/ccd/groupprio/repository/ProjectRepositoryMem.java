@@ -27,11 +27,12 @@ public class ProjectRepositoryMem implements ProjectRepository {
     @Override
     public List<Project> getByClientId(final String clientId) {
         return projects.values().stream()
-                .filter(project -> clientId.equals(project.getClientId()))
-                .collect(Collectors.toList());
+                       .filter(project -> clientId.equals(project.getClientId()))
+                       .collect(Collectors.toList());
     }
 
     private static class IDGenerator {
+
         static long nextId = 0L;
 
         private String next() {

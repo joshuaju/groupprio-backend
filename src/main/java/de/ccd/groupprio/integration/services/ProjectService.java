@@ -16,17 +16,17 @@ public class ProjectService {
     private final SubmissionRepository submissionRepository;
 
     public ProjectService(ProjectRepository projectRepository,
-                          WeightRepository weightRepository,
-                          SubmissionRepository submissionRepository) {
+              WeightRepository weightRepository,
+              SubmissionRepository submissionRepository) {
         this.projectRepository = projectRepository;
         this.weightRepository = weightRepository;
         this.submissionRepository = submissionRepository;
     }
 
     public String createProject(String title,
-                                Set<String> items,
-                                boolean multipleSubmissionsAllowed,
-                                String clientId) {
+              Set<String> items,
+              boolean multipleSubmissionsAllowed,
+              String clientId) {
         var project = new Project(title, items, multipleSubmissionsAllowed, clientId);
         return projectRepository.save(project);
     }
