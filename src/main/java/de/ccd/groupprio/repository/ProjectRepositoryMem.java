@@ -1,9 +1,11 @@
 package de.ccd.groupprio.repository;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import de.ccd.groupprio.domain.data.Project;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ProjectRepositoryMem implements ProjectRepository {
 
@@ -20,6 +22,13 @@ public class ProjectRepositoryMem implements ProjectRepository {
         String id = idGenerator.next();
         projects.put(id, project);
         return id;
+    }
+
+    @Override
+    public List<Project> getByClientId(final String clientId) {
+        return projects.values().stream()
+                .filter(project -> clientId.equals(project.getClientId()))
+                .collect(Collectors.toList());
     }
 
     private static class IDGenerator {
