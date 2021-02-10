@@ -6,11 +6,12 @@ import de.ccd.groupprio.integration.api.dto.ProjectDto;
 import de.ccd.groupprio.integration.api.dto.ProjectStateDto;
 import de.ccd.groupprio.integration.services.ProjectService;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import static de.ccd.groupprio.integration.api.controller.JsonUtil.json;
-import static spark.Spark.get;
-import static spark.Spark.post;
+import static de.ccd.groupprio.integration.api.controller.JsonUtil.*;
+import static spark.Spark.*;
 
 public class ProjectController {
 
@@ -30,7 +31,7 @@ public class ProjectController {
 
             WeightedProject weightedProject = this.projectService.getProjectState(id);
 
-            return new ProjectStateDto(weightedProject.getTitle(),weightedProject.getItems(), weightedProject.getSubmissionCount());
+            return new ProjectStateDto(weightedProject.getTitle(), weightedProject.getItems(), weightedProject.getSubmissionCount());
         }, json());
     }
 
@@ -40,7 +41,7 @@ public class ProjectController {
 
             Project project = this.projectService.getProject(id);
 
-            return new ProjectDto(project.getTitle(),project.getItems(),project.isMultipleSubmissionsAllowed());
+            return new ProjectDto(project.getId(), project.getTitle(), project.getItems(), project.isMultipleSubmissionsAllowed());
         }, json());
     }
 
@@ -50,10 +51,10 @@ public class ProjectController {
             final var clientId = req.headers("clientId");
 
             String id = this.projectService.createProject(
-                    projectDto.title,
-                    projectDto.items,
-                    projectDto.isMultipleSubmissionsAllowed,
-                    clientId);
+                      projectDto.title,
+                      projectDto.items,
+                      projectDto.isMultipleSubmissionsAllowed,
+                      clientId);
 
             return Map.of("id", id);
         }, json());
@@ -63,7 +64,10 @@ public class ProjectController {
         get("/project", (req, res) -> {
             final var clientId = req.headers("clientId");
 
-            return projectService.getProjects(clientId);
+            List<Project> projects = projectService.getProjects(clientId);
+
+            return projects.stream().map(p -> new ProjectDto(p.getId(), p.getTitle(), p.getItems(), p.isMultipleSubmissionsAllowed()))
+                           .collect(Collectors.toList());
         }, json());
     }
 }

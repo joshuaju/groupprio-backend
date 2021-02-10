@@ -5,12 +5,11 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import de.ccd.groupprio.domain.data.Project;
-import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.ccd.groupprio.repository.mapper.ProjectMapperMongo.mapToProject;
+import static de.ccd.groupprio.repository.mapper.ProjectMapperMongo.*;
 
 public class ProjectRepositoryMongo implements ProjectRepository {
 
@@ -23,7 +22,7 @@ public class ProjectRepositoryMongo implements ProjectRepository {
     @Override
     public Project get(String id) {
         BasicDBObject query = new BasicDBObject();
-        query.put("_id", new ObjectId(id));
+        query.put("id", id);
         DBObject dbObj = projectCollection.findOne(query);
         return mapToProject(dbObj);
     }
@@ -31,19 +30,19 @@ public class ProjectRepositoryMongo implements ProjectRepository {
     @Override
     public String save(Project project) {
         DBObject dbProject = new BasicDBObject("title", project.getTitle())
-                .append("items", project.getItems())
-                .append("isMultiSubmissionsAllowed", project.isMultipleSubmissionsAllowed())
-                .append("clientId", project.getClientId());
+                                       .append("id", project.getId())
+                                       .append("items", project.getItems())
+                                       .append("isMultiSubmissionsAllowed", project.isMultipleSubmissionsAllowed())
+                                       .append("clientId", project.getClientId());
         projectCollection.insert(dbProject);
-        ObjectId id = (ObjectId) dbProject.get("_id");
-        return id.toString();
+        return project.getId();
     }
 
     @Override
     public List<Project> getByClientId(final String clientId) {
         List<Project> projects = new ArrayList<>();
         BasicDBObject query = new BasicDBObject();
-        query.put("clientId", new ObjectId(clientId));
+        query.put("clientId", clientId);
         final var projectCursor = projectCollection.find(query);
         for (final DBObject dbObject : projectCursor) {
             projects.add(mapToProject(dbObject));
