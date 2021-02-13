@@ -3,6 +3,7 @@ package de.ccd.groupprio.integration.submit;
 import de.ccd.groupprio.domain.data.PrioItem;
 import de.ccd.groupprio.domain.data.Submission;
 import de.ccd.groupprio.domain.logic.Prioritization;
+import de.ccd.groupprio.domain.logic.IsSubmissionAllowed;
 import de.ccd.groupprio.repository.project.ProjectRepository;
 import de.ccd.groupprio.repository.submission.SubmissionRepository;
 import de.ccd.groupprio.repository.weight.WeightRepository;
@@ -28,12 +29,8 @@ class SubmitProcessor {
 
     private boolean isNotAllowedToSubmit(SubmitCommand cmd) {
         var project = projectRepository.getByProjectId(cmd.projectId);
-        var allowMultiSubmission = project.isMultipleSubmissionsAllowed();
-
-        var alreadySubmitted = submissionRepository
-                .hasClientSubmitted(cmd.projectId, cmd.clientId);
-
-        return !(allowMultiSubmission || !alreadySubmitted);
+        var alreadySubmitted = submissionRepository.hasClientSubmitted(cmd.projectId, cmd.clientId);
+        return IsSubmissionAllowed.check(project, alreadySubmitted);
     }
 
     private void submit(SubmitCommand cmd) {
