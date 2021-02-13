@@ -34,9 +34,7 @@ class SubmitProcessor {
     }
 
     private void submit(SubmitCommand cmd) {
-        var prioItems = cmd.items.stream()
-                .map(PrioItem::new)
-                .collect(Collectors.toList());
+        var prioItems = PrioItem.listOf(cmd.items);
         Submission submission = new Submission(prioItems);
         submissionRepository.save(cmd.projectId, cmd.clientId, submission);
     }
