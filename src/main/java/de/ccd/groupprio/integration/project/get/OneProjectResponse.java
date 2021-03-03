@@ -6,18 +6,19 @@ import lombok.RequiredArgsConstructor;
 import java.util.Set;
 
 @RequiredArgsConstructor
-class ProjectResponse {
+class OneProjectResponse
+{
     final String id;
     final String title;
     final Set<String> items;
-    final boolean isMultipleSubmissionsAllowed;
+    final boolean isSubmissionAllowed;
 
-    public static ProjectResponse map(Project project) {
-        return new ProjectResponse(
+    public static OneProjectResponse from(Project project, boolean isSubmissionAllowed) {
+        return new OneProjectResponse(
                 project.getId(),
                 project.getTitle(),
                 project.getItems(),
-                project.isMultipleSubmissionsAllowed()
+                isSubmissionAllowed
         );
     }
 }

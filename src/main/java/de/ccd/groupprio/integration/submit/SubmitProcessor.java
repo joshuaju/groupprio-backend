@@ -1,6 +1,7 @@
 package de.ccd.groupprio.integration.submit;
 
 import de.ccd.groupprio.domain.data.PrioItem;
+import de.ccd.groupprio.domain.data.Project;
 import de.ccd.groupprio.domain.data.Submission;
 import de.ccd.groupprio.domain.logic.Prioritization;
 import de.ccd.groupprio.domain.logic.IsSubmissionAllowed;
@@ -19,18 +20,20 @@ class SubmitProcessor {
     private final ProjectRepository projectRepository;
 
     SubmitResponse process(SubmitCommand cmd) {
-        if (isNotAllowedToSubmit(cmd))
-            return new SubmitResponse(false);
+        var project = projectRepository.getByProjectId(cmd.projectId);
+        if (isNotAllowedToSubmit(cmd, project))
+            return new SubmitResponse(false,false);
 
         this.submit(cmd);
         this.calcPriorities(cmd.projectId);
-        return new SubmitResponse(true);
+
+        boolean submissionAllowed = IsSubmissionAllowed.check(project, true);
+        return new SubmitResponse(true, submissionAllowed);
     }
 
-    private boolean isNotAllowedToSubmit(SubmitCommand cmd) {
-        var project = projectRepository.getByProjectId(cmd.projectId);
+    private boolean isNotAllowedToSubmit(SubmitCommand cmd, Project project) {
         var alreadySubmitted = submissionRepository.hasClientSubmitted(cmd.projectId, cmd.clientId);
-        return IsSubmissionAllowed.check(project, alreadySubmitted);
+        return !(IsSubmissionAllowed.check(project, alreadySubmitted));
     }
 
     private void submit(SubmitCommand cmd) {

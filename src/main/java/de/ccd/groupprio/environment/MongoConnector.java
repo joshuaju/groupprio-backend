@@ -5,9 +5,10 @@ import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import lombok.SneakyThrows;
 
+import java.net.UnknownHostException;
+
 public class MongoConnector {
-    @SneakyThrows
-    public static DB connectMongoDb() {
+    public static DB connectMongoDb() throws UnknownHostException {
         var mongoHost = System.getenv().getOrDefault("MONGO_HOST", "127.0.0.1");
 
         System.out.println("Connecting to mongoDB at " + mongoHost);

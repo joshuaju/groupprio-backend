@@ -45,7 +45,7 @@ public class Project {
         return Collections.unmodifiableSet(items);
     }
 
-    public boolean isMultipleSubmissionsAllowed() {
+    public boolean isMultiSubmissionAllowed() {
         return isMultipleSubmissionsAllowed;
     }
 

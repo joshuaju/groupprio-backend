@@ -4,18 +4,17 @@ import de.ccd.groupprio.repository.project.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-class GetAllProjectsProcessor {
+class GetAllProjectsProcessor
+{
 
     final ProjectRepository projectRepository;
 
-    List<ProjectResponse> process(GetAllProjectsQuery qry) {
-        return projectRepository
-                .getByClientId(qry.clientId).stream()
-                .map(ProjectResponse::map)
-                .collect(Collectors.toList());
+    AllProjectsResponse process(GetAllProjectsQuery qry)
+    {
+        var projects = projectRepository.getByClientId(qry.clientId);
+        return AllProjectsResponse.from(projects);
     }
 
 }

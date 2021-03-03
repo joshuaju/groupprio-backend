@@ -32,7 +32,7 @@ public class ProjectRepositoryMongo implements ProjectRepository {
         DBObject dbProject = new BasicDBObject("title", project.getTitle())
                                        .append("id", project.getId())
                                        .append("items", project.getItems())
-                                       .append("isMultiSubmissionsAllowed", project.isMultipleSubmissionsAllowed())
+                                       .append("isMultiSubmissionsAllowed", project.isMultiSubmissionAllowed())
                                        .append("clientId", project.getClientId());
         projectCollection.insert(dbProject);
         return project.getId();

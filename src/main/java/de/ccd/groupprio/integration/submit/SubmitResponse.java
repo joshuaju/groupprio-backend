@@ -5,4 +5,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 class SubmitResponse {
     final boolean success;
+    final boolean isSubmissionAllowed;
 }
