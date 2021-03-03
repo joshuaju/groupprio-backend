@@ -3,13 +3,21 @@ package de.ccd.groupprio;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
-import de.ccd.groupprio.integration.App;
-import de.ccd.groupprio.integration.api.controller.ProjectController;
-import de.ccd.groupprio.integration.api.controller.SubmissionController;
-import de.ccd.groupprio.repository.*;
+import de.ccd.groupprio.integration.project.create.CreateProjectController;
+import de.ccd.groupprio.integration.project.get.GetAllProjectsController;
+import de.ccd.groupprio.integration.project.get.GetOneProjectController;
+import de.ccd.groupprio.integration.project.state.GetProjectStateController;
+import de.ccd.groupprio.integration.submit.SubmitController;
+import de.ccd.groupprio.repository.project.ProjectRepository;
+import de.ccd.groupprio.repository.project.ProjectRepositoryMongo;
+import de.ccd.groupprio.repository.submission.SubmissionRepository;
+import de.ccd.groupprio.repository.submission.SubmissionRepositoryMongo;
+import de.ccd.groupprio.repository.weight.WeightRepository;
+import de.ccd.groupprio.repository.weight.WeightRepositoryMongo;
 import lombok.SneakyThrows;
 
 import static spark.Spark.*;
+import static spark.Spark.after;
 
 public class Runner {
 
@@ -19,12 +27,14 @@ public class Runner {
         WeightRepository weightRepository = new WeightRepositoryMongo(groupprioDB);
         SubmissionRepository submissionRepository = new SubmissionRepositoryMongo(groupprioDB);
 
-        App app = new App(projectRepository, weightRepository, submissionRepository);
 
         port(8080);
         enableCORS("*", "GET,OPTIONS,POST,PUT,DELETE", "Authorization,Content-Type,Link,X-Total-Count,Range");
-        new ProjectController(app.getProjectService());
-        new SubmissionController(app.getSubmissionService());
+        new CreateProjectController(projectRepository);
+        new GetOneProjectController(projectRepository, submissionRepository);
+        new GetAllProjectsController(projectRepository);
+        new GetProjectStateController(projectRepository, weightRepository, submissionRepository);
+        new SubmitController(submissionRepository, weightRepository, projectRepository);
         System.out.println("Running server on localhost:8080/");
     }
 
@@ -66,4 +76,5 @@ public class Runner {
             response.type("application/json");
         });
     }
+
 }
