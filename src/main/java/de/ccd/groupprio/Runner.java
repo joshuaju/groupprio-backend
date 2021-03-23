@@ -1,8 +1,14 @@
 package de.ccd.groupprio;
 
-import com.mongodb.DB;
+import static spark.Spark.after;
+import static spark.Spark.before;
+import static spark.Spark.options;
+import static spark.Spark.port;
+
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoDatabase;
+
 import de.ccd.groupprio.integration.project.create.CreateProjectController;
 import de.ccd.groupprio.integration.project.get.GetAllProjectsController;
 import de.ccd.groupprio.integration.project.get.GetOneProjectController;
@@ -16,17 +22,13 @@ import de.ccd.groupprio.repository.weight.WeightRepository;
 import de.ccd.groupprio.repository.weight.WeightRepositoryMongo;
 import lombok.SneakyThrows;
 
-import static spark.Spark.*;
-import static spark.Spark.after;
-
 public class Runner {
 
     public static void main(String[] args) {
-        DB groupprioDB = connectMongoDb();
+        MongoDatabase groupprioDB = connectMongoDb();
         ProjectRepository projectRepository = new ProjectRepositoryMongo(groupprioDB);
         WeightRepository weightRepository = new WeightRepositoryMongo(groupprioDB);
         SubmissionRepository submissionRepository = new SubmissionRepositoryMongo(groupprioDB);
-
 
         port(8080);
         enableCORS("*", "GET,OPTIONS,POST,PUT,DELETE", "Authorization,Content-Type,Link,X-Total-Count,Range");
@@ -39,12 +41,12 @@ public class Runner {
     }
 
     @SneakyThrows
-    private static DB connectMongoDb() {
+    private static MongoDatabase connectMongoDb() {
         var mongoHost = System.getenv().getOrDefault("MONGO_HOST", "127.0.0.1");
         System.out.println("Connecting to mongoDB at " + mongoHost);
         ServerAddress addr = new ServerAddress(mongoHost);
         var mongoClient = new MongoClient(addr);
-        return mongoClient.getDB("groupprio");
+        return mongoClient.getDatabase("groupprio");
     }
 
     private static void enableCORS(final String origin, final String methods, final String headers) {
@@ -76,5 +78,4 @@ public class Runner {
             response.type("application/json");
         });
     }
-
 }

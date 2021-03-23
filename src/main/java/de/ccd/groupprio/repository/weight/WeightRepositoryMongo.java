@@ -1,34 +1,38 @@
 package de.ccd.groupprio.repository.weight;
 
-import com.mongodb.*;
+import com.mongodb.BasicDBList;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.IndexOptions;
 import de.ccd.groupprio.domain.data.WeightedItem;
+import org.bson.Document;
 
 import java.util.List;
 
-import static de.ccd.groupprio.repository.weight.WeightMapperMongo.mapToBasicDBList;
-import static de.ccd.groupprio.repository.weight.WeightMapperMongo.mapToWeightedItemList;
+import static de.ccd.groupprio.repository.weight.WeightMapperMongo.*;
 
 public class WeightRepositoryMongo implements WeightRepository {
-    private final DBCollection weightCollection;
 
-    public WeightRepositoryMongo(DB db) {
+    private final MongoCollection<Document> weightCollection;
+
+    public WeightRepositoryMongo(MongoDatabase db) {
         weightCollection = db.getCollection("weights");
-        initUniqueKey();
+        initUniqueProjectIdIndex();
     }
 
-    private void initUniqueKey() {
-        DBObject key = new BasicDBObject();
-        key.put("project_id", 1);
-        DBObject unique = new BasicDBObject();
-        unique.put("unique", true);
-        weightCollection.createIndex(key, unique);
+    private void initUniqueProjectIdIndex() {
+        var key = new Document("project_id", 1);
+        var indexOptions = new IndexOptions();
+        indexOptions.unique(true);
+        weightCollection.createIndex(key, indexOptions);
     }
 
     @Override
     public List<WeightedItem> findForProjectId(String projectId) {
-        BasicDBObject query = new BasicDBObject();
+        Document query = new Document();
         query.put("project_id", projectId);
-        DBObject weight = weightCollection.findOne(query);
+        Document weight = weightCollection.find(query).first();
         return mapToWeightedItemList(weight);
     }
 
@@ -39,14 +43,15 @@ public class WeightRepositoryMongo implements WeightRepository {
     }
 
     private void insertOrUpdate(String projectId, BasicDBList weightedList) {
-        DBObject dbWeight = new BasicDBObject("project_id", projectId);
-        DBObject found = weightCollection.findOne(dbWeight);
-        if (found != null) {
-            found.put("weighted_items", weightedList);
-            weightCollection.save(found);
+        Document weightDoc = new Document("project_id", projectId);
+        FindIterable<Document> found = weightCollection.find(weightDoc);
+        if (found.cursor().hasNext()) {
+            Document projectToUpdate = found.first();
+            projectToUpdate.put("weighted_items", weightedList);
+            weightCollection.findOneAndReplace(weightDoc, projectToUpdate);
         } else {
-            dbWeight.put("weighted_items", weightedList);
-            weightCollection.save(dbWeight);
+            weightDoc.put("weighted_items", weightedList);
+            weightCollection.insertOne(weightDoc);
         }
     }
 }

@@ -1,19 +1,21 @@
 package de.ccd.groupprio.repository.weight;
 
 import com.mongodb.BasicDBList;
-import com.mongodb.DBObject;
+
 import de.ccd.groupprio.domain.data.WeightedItem;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.bson.Document;
+
 public class WeightMapperMongo {
 
     private WeightMapperMongo() {
     }
 
-    public static List<WeightedItem> mapToWeightedItemList(DBObject object) {
+    public static List<WeightedItem> mapToWeightedItemList(Document object) {
         if (object == null){
           return Collections.emptyList();
         }

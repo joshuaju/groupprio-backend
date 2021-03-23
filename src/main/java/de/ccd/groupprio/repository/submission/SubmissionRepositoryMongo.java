@@ -1,30 +1,36 @@
 package de.ccd.groupprio.repository.submission;
 
-import com.mongodb.*;
-import de.ccd.groupprio.domain.data.Submission;
+import static de.ccd.groupprio.repository.submission.SubmissionMapperMongo.mapToSubmissionList;
 
 import java.util.List;
 
-import static de.ccd.groupprio.repository.submission.SubmissionMapperMongo.mapToSubmissionList;
+import org.bson.Document;
+
+import com.mongodb.BasicDBList;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+import de.ccd.groupprio.domain.data.Submission;
 
 public class SubmissionRepositoryMongo implements SubmissionRepository {
     public static final String PROJECT_ID = "project_id";
     public static final String CLIENT_ID = "client_id";
     public static final String PRIO_ITEMS = "prio_items";
 
-    private final DBCollection submissionCollection;
-    private final DBCollection submitterCollection;
+    private final MongoCollection<Document> submissionCollection;
+    private final MongoCollection<Document> submitterCollection;
 
-    public SubmissionRepositoryMongo(DB db) {
+    public SubmissionRepositoryMongo(MongoDatabase db) {
         submissionCollection = db.getCollection("submissions");
         submitterCollection = db.getCollection("submitters");
     }
 
     @Override
     public List<Submission> findForProjectId(String projectId) {
-        BasicDBObject query = new BasicDBObject();
+        Document query = new Document();
         query.put(PROJECT_ID, projectId);
-        DBCursor cursor = submissionCollection.find(query);
+        FindIterable<Document> cursor = submissionCollection.find(query);
         return mapToSubmissionList(cursor);
     }
 
@@ -35,9 +41,8 @@ public class SubmissionRepositoryMongo implements SubmissionRepository {
     }
 
     private void saveSubmitter(String projectId, String clientId) {
-        BasicDBObject submitter = new BasicDBObject(PROJECT_ID, projectId)
-                .append(CLIENT_ID, clientId);
-        submitterCollection.insert(submitter);
+        Document submitter = new Document(PROJECT_ID, projectId).append(CLIENT_ID, clientId);
+        submitterCollection.insertOne(submitter);
     }
 
     private void saveSubmission(String projectId, Submission submission) {
@@ -45,8 +50,8 @@ public class SubmissionRepositoryMongo implements SubmissionRepository {
         for (int i = 0; i < submission.getItems().size(); i++) {
             prioList.put(i, submission.getItemName(i));
         }
-        DBObject dbSubmission = new BasicDBObject(PROJECT_ID, projectId).append(PRIO_ITEMS, prioList);
-        submissionCollection.insert(dbSubmission);
+        Document dbSubmission = new Document(PROJECT_ID, projectId).append(PRIO_ITEMS, prioList);
+        submissionCollection.insertOne(dbSubmission);
     }
 
     @Override
@@ -56,9 +61,9 @@ public class SubmissionRepositoryMongo implements SubmissionRepository {
 
     @Override
     public boolean hasClientSubmitted(String projectId, String clientId) {
-        var qry = new BasicDBObject();
+        var qry = new Document();
         qry.put(PROJECT_ID, projectId);
         qry.put(CLIENT_ID, clientId);
-        return submitterCollection.count(qry) != 0;
+        return submitterCollection.countDocuments(qry) != 0;
     }
 }
