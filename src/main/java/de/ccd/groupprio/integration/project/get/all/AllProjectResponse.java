@@ -1,10 +1,9 @@
-package de.ccd.groupprio.integration.project.get;
+package de.ccd.groupprio.integration.project.get.all;
 
 import de.ccd.groupprio.domain.data.Project;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor

@@ -13,4 +13,6 @@ public interface SubmissionRepository {
     int getSubmissionCount(String projectId);
 
     boolean hasClientSubmitted(String projectId, String clientId);
+
+    List<String> getSubmitters(String projectId);
 }

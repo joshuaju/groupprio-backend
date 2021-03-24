@@ -4,20 +4,20 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
 import de.ccd.groupprio.domain.data.Project;
+import de.ccd.groupprio.repository.submission.SubmissionRepository;
 import org.bson.Document;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static de.ccd.groupprio.repository.project.ProjectMapperMongo.*;
 
 public class ProjectRepositoryMongo implements ProjectRepository {
 
     private final MongoCollection<Document> projectCollection;
+    private final ProjectMapperMongo projectMapper;
 
-    public ProjectRepositoryMongo(MongoDatabase db) {
+    public ProjectRepositoryMongo(SubmissionRepository submissionRepository, MongoDatabase db) {
         projectCollection = db.getCollection("projects");
+        this.projectMapper = new ProjectMapperMongo(submissionRepository::getSubmitters);
         initUniqueTitleAndClientIdIndex();
     }
 
@@ -32,7 +32,7 @@ public class ProjectRepositoryMongo implements ProjectRepository {
         Document query = new Document();
         query.put("id", id);
         Document projectDocs = projectCollection.find(query).first();
-        return mapToProject(Objects.requireNonNull(projectDocs));
+        return projectMapper.mapToProject(Objects.requireNonNull(projectDocs));
     }
 
     @Override
@@ -47,13 +47,9 @@ public class ProjectRepositoryMongo implements ProjectRepository {
 
     @Override
     public List<Project> getByClientId(final String clientId) {
-        List<Project> projects = new ArrayList<>();
         Document query = new Document();
         query.put("clientId", clientId);
-        var projectCursor = projectCollection.find(query);
-        for (Document projectDoc : projectCursor) {
-            projects.add(mapToProject(projectDoc));
-        }
-        return projects;
+        var projectDocs = projectCollection.find(query);
+        return projectMapper.mapToProjects(projectDocs);
     }
 }

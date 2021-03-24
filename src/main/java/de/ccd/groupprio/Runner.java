@@ -1,17 +1,11 @@
 package de.ccd.groupprio;
 
-import static spark.Spark.after;
-import static spark.Spark.before;
-import static spark.Spark.options;
-import static spark.Spark.port;
-
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
-
 import de.ccd.groupprio.integration.project.create.CreateProjectController;
-import de.ccd.groupprio.integration.project.get.GetAllProjectsController;
-import de.ccd.groupprio.integration.project.get.GetOneProjectController;
+import de.ccd.groupprio.integration.project.get.all.GetAllProjectsController;
+import de.ccd.groupprio.integration.project.get.one.GetOneProjectController;
 import de.ccd.groupprio.integration.project.state.GetProjectStateController;
 import de.ccd.groupprio.integration.submit.SubmitController;
 import de.ccd.groupprio.repository.project.ProjectRepository;
@@ -22,18 +16,20 @@ import de.ccd.groupprio.repository.weight.WeightRepository;
 import de.ccd.groupprio.repository.weight.WeightRepositoryMongo;
 import lombok.SneakyThrows;
 
+import static spark.Spark.*;
+
 public class Runner {
 
     public static void main(String[] args) {
         MongoDatabase groupprioDB = connectMongoDb();
-        ProjectRepository projectRepository = new ProjectRepositoryMongo(groupprioDB);
         WeightRepository weightRepository = new WeightRepositoryMongo(groupprioDB);
         SubmissionRepository submissionRepository = new SubmissionRepositoryMongo(groupprioDB);
+        ProjectRepository projectRepository = new ProjectRepositoryMongo(submissionRepository, groupprioDB);
 
         port(8080);
         enableCORS("*", "GET,OPTIONS,POST,PUT,DELETE", "Authorization,Content-Type,Link,X-Total-Count,Range");
         new CreateProjectController(projectRepository);
-        new GetOneProjectController(projectRepository, submissionRepository);
+        new GetOneProjectController(projectRepository);
         new GetAllProjectsController(projectRepository);
         new GetProjectStateController(projectRepository, weightRepository, submissionRepository);
         new SubmitController(submissionRepository, weightRepository, projectRepository);

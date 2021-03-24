@@ -1,4 +1,4 @@
-package de.ccd.groupprio.integration.project.get;
+package de.ccd.groupprio.integration.project.get.one;
 
 import de.ccd.groupprio.repository.project.ProjectRepository;
 import de.ccd.groupprio.repository.submission.SubmissionRepository;
@@ -8,8 +8,8 @@ import static spark.Spark.get;
 
 public class GetOneProjectController {
 
-    public GetOneProjectController(ProjectRepository projectRepository, SubmissionRepository submissionRepository) {
-        var processor = new GetOneProjectProcessor(projectRepository, submissionRepository);
+    public GetOneProjectController(ProjectRepository projectRepository) {
+        var processor = new GetOneProjectProcessor(projectRepository);
 
         get("/project/:id", (req, res) -> {
             var qry = GetOneProjectQuery.from(req);

@@ -1,9 +1,10 @@
 package de.ccd.groupprio.repository.submission;
 
-import static de.ccd.groupprio.repository.submission.SubmissionMapperMongo.mapToSubmissionList;
+import static de.ccd.groupprio.repository.submission.SubmissionMapperMongo.*;
 
 import java.util.List;
 
+import com.mongodb.BasicDBObject;
 import org.bson.Document;
 
 import com.mongodb.BasicDBList;
@@ -65,5 +66,13 @@ public class SubmissionRepositoryMongo implements SubmissionRepository {
         qry.put(PROJECT_ID, projectId);
         qry.put(CLIENT_ID, clientId);
         return submitterCollection.countDocuments(qry) != 0;
+    }
+
+    @Override
+    public List<String> getSubmitters(String projectId) {
+        var qry = new BasicDBObject();
+        qry.put(PROJECT_ID, projectId);
+        var submitters = submitterCollection.find(qry);
+        return mapToSubmitterIds(submitters);
     }
 }
