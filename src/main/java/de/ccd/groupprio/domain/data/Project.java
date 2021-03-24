@@ -62,7 +62,7 @@ public class Project {
     }
 
     public boolean isClientAllowedToSubmit(String clientId) {
-        return this.isMultipleSubmissionsAllowed || this.hasSubmitted(clientId);
+        return this.isMultipleSubmissionsAllowed || !this.hasSubmitted(clientId);
     }
 
     public boolean isClientNotAllowedToSubmit(String clientId) {

@@ -1,6 +1,5 @@
 package de.ccd.groupprio.repository.weight;
 
-import com.mongodb.BasicDBList;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -9,6 +8,8 @@ import de.ccd.groupprio.domain.data.WeightedItem;
 import org.bson.Document;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static de.ccd.groupprio.repository.weight.WeightMapperMongo.*;
 
@@ -38,19 +39,21 @@ public class WeightRepositoryMongo implements WeightRepository {
 
     @Override
     public void save(String projectId, List<WeightedItem> items) {
-        BasicDBList weightedList = mapToBasicDBList(items);
-        insertOrUpdate(projectId, weightedList);
+        var weightedListNames = items.stream()
+                                     .map(WeightedItem::getName)
+                                     .collect(Collectors.toList());
+        insertOrUpdate(projectId, weightedListNames);
     }
 
-    private void insertOrUpdate(String projectId, BasicDBList weightedList) {
+    private void insertOrUpdate(String projectId, List<String> weightedItemNames) {
         Document weightDoc = new Document("project_id", projectId);
         FindIterable<Document> found = weightCollection.find(weightDoc);
         if (found.cursor().hasNext()) {
-            Document projectToUpdate = found.first();
-            projectToUpdate.put("weighted_items", weightedList);
+            Document projectToUpdate = Objects.requireNonNull(found.first());
+            projectToUpdate.put("weighted_items", weightedItemNames);
             weightCollection.findOneAndReplace(weightDoc, projectToUpdate);
         } else {
-            weightDoc.put("weighted_items", weightedList);
+            weightDoc.put("weighted_items", weightedItemNames);
             weightCollection.insertOne(weightDoc);
         }
     }

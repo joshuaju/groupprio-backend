@@ -26,8 +26,12 @@ public class Runner {
         SubmissionRepository submissionRepository = new SubmissionRepositoryMongo(groupprioDB);
         ProjectRepository projectRepository = new ProjectRepositoryMongo(submissionRepository, groupprioDB);
 
+        initExceptionHandler(Throwable::printStackTrace);
         port(8080);
         enableCORS("*", "GET,OPTIONS,POST,PUT,DELETE", "Authorization,Content-Type,Link,X-Total-Count,Range");
+
+
+
         new CreateProjectController(projectRepository);
         new GetOneProjectController(projectRepository);
         new GetAllProjectsController(projectRepository);

@@ -1,7 +1,5 @@
 package de.ccd.groupprio.repository.submission;
 
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import de.ccd.groupprio.domain.data.PrioItem;
 import de.ccd.groupprio.domain.data.Submission;
@@ -26,8 +24,10 @@ public class SubmissionMapperMongo {
     }
 
     private static Submission mapToSubmission(Document submissionDoc) {
-        BasicDBList dbList = (BasicDBList) submissionDoc.get("prio_items");
-        List<PrioItem> prioItems = dbList.stream().map(obj -> new PrioItem(obj.toString())).collect(Collectors.toList());
+        var prioItemNames = submissionDoc.getList("prio_items", String.class);
+        List<PrioItem> prioItems = prioItemNames.stream()
+                                                .map(PrioItem::new)
+                                                .collect(Collectors.toList());
         return new Submission(prioItems);
     }
 
@@ -41,7 +41,6 @@ public class SubmissionMapperMongo {
     }
 
     private static String mapToSubmitterId(Document submitter) {
-        var submitterDb = (BasicDBObject) submitter.get("client_id");
-        return submitterDb.toString();
+        return submitter.getString("client_id");
     }
 }
