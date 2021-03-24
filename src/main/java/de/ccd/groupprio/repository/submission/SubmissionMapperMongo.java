@@ -1,6 +1,7 @@
 package de.ccd.groupprio.repository.submission;
 
 import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import de.ccd.groupprio.domain.data.PrioItem;
@@ -14,14 +15,31 @@ public class SubmissionMapperMongo {
     private SubmissionMapperMongo() {
     }
 
-    public static List<Submission> mapToSubmissionList(DBCursor cursor) {
-        List<DBObject> dbObjects = cursor.toArray();
-        return dbObjects.stream().map(SubmissionMapperMongo::mapToSubmission).collect(Collectors.toList());
+    public static List<Submission> mapToSubmissionList(DBCursor submissions) {
+        List<DBObject> submissionList = submissions.toArray();
+        return submissionList.stream()
+                             .map(SubmissionMapperMongo::mapToSubmission)
+                             .collect(Collectors.toList());
     }
 
-    private static Submission mapToSubmission(DBObject dbObject) {
-        BasicDBList dbList = (BasicDBList) dbObject.get("prio_items");
-        List<PrioItem> prioItems = dbList.stream().map(obj -> new PrioItem(obj.toString())).collect(Collectors.toList());
+    private static Submission mapToSubmission(DBObject submission) {
+        BasicDBList prioItemList = (BasicDBList) submission.get("prio_items");
+        List<PrioItem> prioItems = prioItemList.stream()
+                                         .map(obj -> new PrioItem(obj.toString()))
+                                         .collect(Collectors.toList());
         return new Submission(prioItems);
+    }
+
+    public static List<String> mapToSubmitterIds(DBCursor submitters) {
+        List<DBObject> submitterList = submitters.toArray();
+        return submitterList.stream()
+                     .map(SubmissionMapperMongo::mapToSubmitterId)
+                     .collect(Collectors.toList());
+
+    }
+
+    private static String mapToSubmitterId(DBObject submitter) {
+        var submitterDb = (BasicDBObject) submitter.get("client_id");
+        return submitterDb.toString();
     }
 }

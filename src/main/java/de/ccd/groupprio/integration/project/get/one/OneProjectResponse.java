@@ -1,4 +1,4 @@
-package de.ccd.groupprio.integration.project.get;
+package de.ccd.groupprio.integration.project.get.one;
 
 import de.ccd.groupprio.domain.data.Project;
 import lombok.RequiredArgsConstructor;

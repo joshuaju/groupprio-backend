@@ -5,7 +5,7 @@ import de.ccd.groupprio.domain.data.Submission;
 
 import java.util.List;
 
-import static de.ccd.groupprio.repository.submission.SubmissionMapperMongo.mapToSubmissionList;
+import static de.ccd.groupprio.repository.submission.SubmissionMapperMongo.*;
 
 public class SubmissionRepositoryMongo implements SubmissionRepository {
     public static final String PROJECT_ID = "project_id";
@@ -60,5 +60,13 @@ public class SubmissionRepositoryMongo implements SubmissionRepository {
         qry.put(PROJECT_ID, projectId);
         qry.put(CLIENT_ID, clientId);
         return submitterCollection.count(qry) != 0;
+    }
+
+    @Override
+    public List<String> getSubmitters(String projectId) {
+        var qry = new BasicDBObject();
+        qry.put(PROJECT_ID, projectId);
+        var submitters = submitterCollection.find(qry);
+        return mapToSubmitterIds(submitters);
     }
 }

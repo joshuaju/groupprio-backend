@@ -5,8 +5,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import de.ccd.groupprio.domain.data.Project;
-
-import static de.ccd.groupprio.repository.project.ProjectMapperMongo.mapToProject;
+import de.ccd.groupprio.repository.submission.SubmissionRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +13,11 @@ import java.util.List;
 public class ProjectRepositoryMongo implements ProjectRepository {
 
     private final DBCollection projectCollection;
+    private final ProjectMapperMongo projectMapper;
 
-    public ProjectRepositoryMongo(DB db) {
+    public ProjectRepositoryMongo(SubmissionRepository submissionRepository, DB db) {
         projectCollection = db.getCollection("projects");
+        this.projectMapper = new ProjectMapperMongo(submissionRepository::getSubmitters);
     }
 
     @Override
@@ -24,7 +25,7 @@ public class ProjectRepositoryMongo implements ProjectRepository {
         BasicDBObject query = new BasicDBObject();
         query.put("id", id);
         DBObject dbObj = projectCollection.findOne(query);
-        return mapToProject(dbObj);
+        return projectMapper.mapToProject(dbObj);
     }
 
     @Override
@@ -40,13 +41,9 @@ public class ProjectRepositoryMongo implements ProjectRepository {
 
     @Override
     public List<Project> getByClientId(final String clientId) {
-        List<Project> projects = new ArrayList<>();
         BasicDBObject query = new BasicDBObject();
         query.put("clientId", clientId);
-        final var projectCursor = projectCollection.find(query);
-        for (final DBObject dbObject : projectCursor) {
-            projects.add(mapToProject(dbObject));
-        }
-        return projects;
+        var projectCursor = projectCollection.find(query);
+        return projectMapper.mapToProjects(projectCursor);
     }
 }

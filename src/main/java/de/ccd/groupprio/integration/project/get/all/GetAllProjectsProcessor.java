@@ -1,9 +1,7 @@
-package de.ccd.groupprio.integration.project.get;
+package de.ccd.groupprio.integration.project.get.all;
 
 import de.ccd.groupprio.repository.project.ProjectRepository;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 class GetAllProjectsProcessor

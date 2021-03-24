@@ -1,4 +1,4 @@
-package de.ccd.groupprio.integration.project.get;
+package de.ccd.groupprio.integration.project.get.all;
 
 import lombok.RequiredArgsConstructor;
 import spark.Request;
