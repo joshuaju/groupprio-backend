@@ -1,10 +1,13 @@
 package de.ccd.groupprio.domain.data;
 
+import lombok.ToString;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+@ToString
 public class Project {
 
     private final String id;

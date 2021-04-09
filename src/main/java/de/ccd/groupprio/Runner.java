@@ -3,6 +3,8 @@ package de.ccd.groupprio;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
+import de.ccd.groupprio.event_store.EventStore;
+import de.ccd.groupprio.event_store.EventStoreMem;
 import de.ccd.groupprio.integration.project.create.CreateProjectController;
 import de.ccd.groupprio.integration.project.get.all.GetAllProjectsController;
 import de.ccd.groupprio.integration.project.get.one.GetOneProjectController;
@@ -25,6 +27,7 @@ public class Runner {
         WeightRepository weightRepository = new WeightRepositoryMongo(groupprioDB);
         SubmissionRepository submissionRepository = new SubmissionRepositoryMongo(groupprioDB);
         ProjectRepository projectRepository = new ProjectRepositoryMongo(submissionRepository, groupprioDB);
+        EventStore eventStore = new EventStoreMem();
 
         initExceptionHandler(Throwable::printStackTrace);
         port(8080);
@@ -32,11 +35,11 @@ public class Runner {
 
 
 
-        new CreateProjectController(projectRepository);
+        new CreateProjectController(eventStore, projectRepository);
         new GetOneProjectController(projectRepository);
         new GetAllProjectsController(projectRepository);
         new GetProjectStateController(projectRepository, weightRepository, submissionRepository);
-        new SubmitController(submissionRepository, weightRepository, projectRepository);
+        new SubmitController(eventStore, submissionRepository, weightRepository, projectRepository);
         System.out.println("Running server on localhost:8080/");
     }
 
