@@ -12,8 +12,8 @@ public final class ProjectCreatedEvent extends Event {
     private final String title;
     private final boolean multiSubmission;
 
-    public ProjectCreatedEvent(long index, String projectId, String ownerId, String title, boolean multiSubmission) {
-        super(index, projectId, "ProjectCreatedEvent");
+    public ProjectCreatedEvent(String projectId, String ownerId, String title, boolean multiSubmission) {
+        super(projectId, "ProjectCreatedEvent");
         this.ownerId = ownerId;
         this.title = title;
         this.multiSubmission = multiSubmission;

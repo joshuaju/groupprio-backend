@@ -12,8 +12,8 @@ public final class ProjectReorderedEvent extends Event {
 
     private final List<String> orderedItems;
 
-    public ProjectReorderedEvent(long index, String contextId, List<String> orderedItems) {
-        super(index, contextId, "ProjectReorderedEvent");
+    public ProjectReorderedEvent(String contextId, List<String> orderedItems) {
+        super(contextId, "ProjectReorderedEvent");
         this.orderedItems = orderedItems;
     }
 }

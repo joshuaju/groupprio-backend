@@ -21,14 +21,14 @@ class EventStoreMemTest {
         var store = new EventStoreMem();
 
         { // store events ...
-            var created1 = new ProjectCreatedEvent(0, "pid:abc", "jujo", "Abc", false);
-            var itemsAdded1 = new ItemsAddedEvent(1, "pid:abc", Set.of("A", "B", "C"));
+            var created1 = new ProjectCreatedEvent( "pid:abc", "jujo", "Abc", false);
+            var itemsAdded1 = new ItemsAddedEvent("pid:abc", Set.of("A", "B", "C"));
 
             store.record(created1);
             store.record(itemsAdded1);
 
-            var created2 = new ProjectCreatedEvent(0, "pid:def", "jujo", "Abc", false);
-            var itemsAdded2 = new ItemsAddedEvent(1, "pid:def", Set.of("D", "E", "F"));
+            var created2 = new ProjectCreatedEvent( "pid:def", "jujo", "Abc", false);
+            var itemsAdded2 = new ItemsAddedEvent("pid:def", Set.of("D", "E", "F"));
 
             store.record(created2);
             store.record(itemsAdded2);
@@ -64,9 +64,9 @@ class EventStoreMemTest {
                                        .map(e -> (ItemOrderSuggestedEvent) e)
                                        .collect(Collectors.toList());
 
-            var suggestedOrder = new ItemOrderSuggestedEvent(idx + 1, "pid:abc", "orth", List.of("B", "A", "C"));
+            var suggestedOrder = new ItemOrderSuggestedEvent("pid:abc", "orth", List.of("B", "A", "C"));
             var projectOrder = List.of("B", "A", "C"); // calculate projectOrder using 'suggestedOrders' and new 'suggestedOrder'
-            var projectReordered = new ProjectReorderedEvent(idx + 2, "pid:abc", projectOrder);
+            var projectReordered = new ProjectReorderedEvent( "pid:abc", projectOrder);
 
             store.record(suggestedOrder);
             store.record(projectReordered);

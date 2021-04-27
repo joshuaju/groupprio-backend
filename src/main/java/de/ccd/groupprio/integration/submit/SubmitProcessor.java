@@ -42,7 +42,7 @@ class SubmitProcessor {
         Submission submission = new Submission(prioItems);
         submissionRepository.save(cmd.projectId, cmd.clientId, submission);
 
-        return new ItemOrderSuggestedEvent(-1, cmd.projectId, cmd.clientId, cmd.items);
+        return new ItemOrderSuggestedEvent(cmd.projectId, cmd.clientId, cmd.items);
     }
 
     private ProjectReorderedEvent calcPriorities(String projectId) {
@@ -50,6 +50,6 @@ class SubmitProcessor {
         var weightedItems = Prioritization.averageSubmissions(submissions);
         weightRepository.save(projectId, weightedItems);
 
-        return new ProjectReorderedEvent(-1, projectId, weightedItems.stream().map(WeightedItem::getName).collect(Collectors.toList()));
+        return new ProjectReorderedEvent(projectId, weightedItems.stream().map(WeightedItem::getName).collect(Collectors.toList()));
     }
 }

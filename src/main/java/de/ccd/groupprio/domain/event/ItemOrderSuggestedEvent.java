@@ -13,8 +13,8 @@ public final class ItemOrderSuggestedEvent extends Event {
     private final String submitterId;
     private final List<String> orderedItems;
 
-    public ItemOrderSuggestedEvent(long index, String projectId, String submitterId, List<String> orderedItems) {
-        super(index, projectId, "ItemOrderSuggestedEvent");
+    public ItemOrderSuggestedEvent(String projectId, String submitterId, List<String> orderedItems) {
+        super(projectId, "ItemOrderSuggestedEvent");
         this.submitterId = submitterId;
         this.orderedItems = orderedItems;
     }

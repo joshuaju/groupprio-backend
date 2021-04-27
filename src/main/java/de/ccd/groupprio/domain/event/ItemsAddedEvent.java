@@ -12,8 +12,8 @@ public final class ItemsAddedEvent extends Event {
 
     private final Set<String> items;
 
-    public ItemsAddedEvent(long index, String projectId, Set<String> items) {
-        super(index, projectId, "ItemsAddedEvent");
+    public ItemsAddedEvent(String projectId, Set<String> items) {
+        super(projectId, "ItemsAddedEvent");
         this.items = items;
     }
 }
