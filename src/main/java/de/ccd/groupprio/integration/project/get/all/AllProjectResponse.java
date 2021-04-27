@@ -1,25 +1,17 @@
 package de.ccd.groupprio.integration.project.get.all;
 
-import de.ccd.groupprio.domain.data.Project;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-class AllProjectsResponse
-{
-    final List<OverviewProject> projects;
+class AllProjectsResponse {
 
-    public static AllProjectsResponse from(List<Project> projects) {
-        List<OverviewProject> mapped = projects.stream()
-                                                .map(p -> new OverviewProject(p.getId(), p.getTitle()))
-                                                .collect(Collectors.toList());
-        return new AllProjectsResponse(mapped);
-    }
+    final List<OverviewProject> projects;
 
     @RequiredArgsConstructor
     static class OverviewProject {
+
         final String id;
         final String title;
     }

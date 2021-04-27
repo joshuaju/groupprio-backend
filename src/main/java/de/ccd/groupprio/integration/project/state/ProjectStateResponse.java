@@ -6,7 +6,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 class ProjectStateResponse {
+
     final String title;
     final List<String> weightedItems;
-    final int submissionCount;
+    final long submissionCount;
 }

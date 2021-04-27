@@ -6,7 +6,7 @@ import spark.Request;
 
 import java.util.List;
 
-import static de.ccd.groupprio.integration.util.JsonUtil.stringList;
+import static de.ccd.groupprio.integration.util.JsonUtil.*;
 
 @RequiredArgsConstructor
 class SubmitCommand {
@@ -18,9 +18,9 @@ class SubmitCommand {
     static SubmitCommand from(Request req) {
         var body = JsonUtil.jsonNode(req.body());
         return new SubmitCommand(
-                req.headers("clientId"),
-                req.params(":id"),
-                stringList(body, "items")
+                  req.headers("clientId"),
+                  req.params(":id"),
+                  stringList(body, "items")
         );
     }
 }

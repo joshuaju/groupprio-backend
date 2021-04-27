@@ -21,13 +21,13 @@ class EventStoreMemTest {
         var store = new EventStoreMem();
 
         { // store events ...
-            var created1 = new ProjectCreatedEvent( "pid:abc", "jujo", "Abc", false);
+            var created1 = new ProjectCreatedEvent("pid:abc", "jujo", "Abc", false);
             var itemsAdded1 = new ItemsAddedEvent("pid:abc", Set.of("A", "B", "C"));
 
             store.record(created1);
             store.record(itemsAdded1);
 
-            var created2 = new ProjectCreatedEvent( "pid:def", "jujo", "Abc", false);
+            var created2 = new ProjectCreatedEvent("pid:def", "jujo", "Abc", false);
             var itemsAdded2 = new ItemsAddedEvent("pid:def", Set.of("D", "E", "F"));
 
             store.record(created2);
@@ -66,7 +66,7 @@ class EventStoreMemTest {
 
             var suggestedOrder = new ItemOrderSuggestedEvent("pid:abc", "orth", List.of("B", "A", "C"));
             var projectOrder = List.of("B", "A", "C"); // calculate projectOrder using 'suggestedOrders' and new 'suggestedOrder'
-            var projectReordered = new ProjectReorderedEvent( "pid:abc", projectOrder);
+            var projectReordered = new ProjectReorderedEvent("pid:abc", projectOrder);
 
             store.record(suggestedOrder);
             store.record(projectReordered);
@@ -74,10 +74,10 @@ class EventStoreMemTest {
 
         { // replay events to get the current project order
             var reorderedEvent = store.replay().stream()
-                                    .filter(e -> e.getContextId().equals("pid:abc"))
-                                    .filter(e -> e instanceof ProjectReorderedEvent)
-                                    .map(e -> (ProjectReorderedEvent) e)
-                                    .max(Comparator.comparingLong(Event::getIndex)).orElseThrow();
+                                      .filter(e -> e.getContextId().equals("pid:abc"))
+                                      .filter(e -> e instanceof ProjectReorderedEvent)
+                                      .map(e -> (ProjectReorderedEvent) e)
+                                      .max(Comparator.comparingLong(Event::getIndex)).orElseThrow();
 
             System.out.println("Project 'abc' order is: ");
             System.out.println(Arrays.toString(reorderedEvent.getOrderedItems().toArray()));

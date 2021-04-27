@@ -1,7 +1,6 @@
 package de.ccd.groupprio.domain.logic;
 
 import de.ccd.groupprio.domain.data.Submission;
-import de.ccd.groupprio.domain.data.WeightedItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,17 +10,16 @@ import java.util.stream.Collectors;
 
 public class Prioritization {
 
-    public static List<WeightedItem> averageSubmissions(List<Submission> submissions) {
+    public static List<String> averageSubmissions(List<Submission> submissions) {
         var weights = getWeights(submissions);
         var summedWeights = getSummedWeights(weights);
         return sortByWeight(summedWeights);
     }
 
-    private static List<WeightedItem> sortByWeight(Map<String, Integer> weightPerItem) {
+    private static List<String> sortByWeight(Map<String, Integer> weightPerItem) {
         return weightPerItem.entrySet().stream()
                             .sorted(Map.Entry.comparingByValue()) // TODO and explicitly sort by key (name)
                             .map(Map.Entry::getKey)
-                            .map(WeightedItem::new)
                             .collect(Collectors.toList());
     }
 

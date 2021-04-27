@@ -5,7 +5,7 @@ import org.junit.jupiter.api.RepeatedTest;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 class PrioritizationTest {
 
@@ -14,10 +14,10 @@ class PrioritizationTest {
     public static final PrioItem C = new PrioItem("C");
     public static final PrioItem D = new PrioItem("D");
 
-    public static final WeightedItem WEIGHED_A = new WeightedItem("A");
-    public static final WeightedItem WEIGHED_B = new WeightedItem("B");
-    public static final WeightedItem WEIGHED_C = new WeightedItem("C");
-    public static final WeightedItem WEIGHED_D = new WeightedItem("D");
+    public static final String WEIGHED_A = "A";
+    public static final String WEIGHED_B = "B";
+    public static final String WEIGHED_C = "C";
+    public static final String WEIGHED_D = "D";
 
     @RepeatedTest(100)
     void average() {

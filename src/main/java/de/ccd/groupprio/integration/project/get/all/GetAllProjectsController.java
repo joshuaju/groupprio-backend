@@ -1,14 +1,14 @@
 package de.ccd.groupprio.integration.project.get.all;
 
-import de.ccd.groupprio.repository.project.ProjectRepository;
+import de.ccd.groupprio.event_store.EventStore;
 
-import static de.ccd.groupprio.integration.util.JsonUtil.json;
-import static spark.Spark.get;
+import static de.ccd.groupprio.integration.util.JsonUtil.*;
+import static spark.Spark.*;
 
 public class GetAllProjectsController {
 
-    public GetAllProjectsController(ProjectRepository projectRepository) {
-        var processor = new GetAllProjectsProcessor(projectRepository);
+    public GetAllProjectsController(EventStore eventStore) {
+        var processor = new GetAllProjectsProcessor(eventStore);
 
         get("/project", (req, res) -> {
             var qry = GetAllProjectsQuery.from(req);

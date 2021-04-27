@@ -6,11 +6,11 @@ import spark.Request;
 
 import java.util.Set;
 
-import static de.ccd.groupprio.integration.util.JsonUtil.asBoolean;
-import static de.ccd.groupprio.integration.util.JsonUtil.stringSet;
+import static de.ccd.groupprio.integration.util.JsonUtil.*;
 
 @RequiredArgsConstructor
 class CreateProjectCommand {
+
     final String title;
     final Set<String> items;
     final String createdByClientId;
@@ -19,10 +19,10 @@ class CreateProjectCommand {
     static CreateProjectCommand from(Request req) {
         var body = JsonUtil.jsonNode(req.body());
         return new CreateProjectCommand(
-                body.get("title").asText(),
-                stringSet(body, "items"),
-                req.headers("clientId"),
-                asBoolean(body, "isMultipleSubmissionsAllowed", false)
+                  body.get("title").asText(),
+                  stringSet(body, "items"),
+                  req.headers("clientId"),
+                  asBoolean(body, "isMultipleSubmissionsAllowed", false)
         );
     }
 }

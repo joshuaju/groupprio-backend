@@ -4,5 +4,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class CreatedProjectResponse {
+
     private final String id;
 }

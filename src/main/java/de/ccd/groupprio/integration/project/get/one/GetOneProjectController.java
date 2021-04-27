@@ -1,14 +1,13 @@
 package de.ccd.groupprio.integration.project.get.one;
 
-import de.ccd.groupprio.repository.project.ProjectRepository;
-import de.ccd.groupprio.repository.submission.SubmissionRepository;
+import de.ccd.groupprio.event_store.EventStore;
 
-import static de.ccd.groupprio.integration.util.JsonUtil.json;
-import static spark.Spark.get;
+import static de.ccd.groupprio.integration.util.JsonUtil.*;
+import static spark.Spark.*;
 
 public class GetOneProjectController {
 
-    public GetOneProjectController(ProjectRepository projectRepository) {
+    public GetOneProjectController(EventStore projectRepository) {
         var processor = new GetOneProjectProcessor(projectRepository);
 
         get("/project/:id", (req, res) -> {

@@ -5,6 +5,7 @@ import spark.Request;
 
 @RequiredArgsConstructor
 class ProjectStateQuery {
+
     final String projectId;
 
     static ProjectStateQuery from(Request req) {

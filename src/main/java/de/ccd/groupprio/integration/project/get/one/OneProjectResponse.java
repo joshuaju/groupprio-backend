@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 import java.util.Set;
 
 @RequiredArgsConstructor
-class OneProjectResponse
-{
+class OneProjectResponse {
+
     final String id;
     final String title;
     final Set<String> items;
@@ -15,10 +15,10 @@ class OneProjectResponse
 
     public static OneProjectResponse from(Project project, boolean isSubmissionAllowed) {
         return new OneProjectResponse(
-                project.getId(),
-                project.getTitle(),
-                project.getItems(),
-                isSubmissionAllowed
+                  project.getId(),
+                  project.getTitle(),
+                  project.getItems(),
+                  isSubmissionAllowed
         );
     }
 }

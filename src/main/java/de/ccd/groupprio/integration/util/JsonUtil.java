@@ -18,8 +18,8 @@ public class JsonUtil {
     @SneakyThrows
     public static JsonNode jsonNode(String jsonString) {
         ObjectMapper mapper = new ObjectMapper()
-                .registerModule(new JavaTimeModule())
-                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+                                        .registerModule(new JavaTimeModule())
+                                        .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         return mapper.readTree(jsonString);
     }
 
@@ -30,7 +30,6 @@ public class JsonUtil {
     public static ResponseTransformer json() {
         return JsonUtil::toJson;
     }
-
 
     public static List<String> stringList(JsonNode node, String fieldName) {
         List<String> items = new ArrayList<>(node.size());
@@ -47,5 +46,4 @@ public class JsonUtil {
     public static boolean asBoolean(JsonNode node, String fieldName, boolean defaultValue) {
         return node.get(fieldName) != null ? node.get(fieldName).asBoolean() : defaultValue;
     }
-
 }

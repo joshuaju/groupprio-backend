@@ -5,6 +5,7 @@ import spark.Request;
 
 @RequiredArgsConstructor
 class GetOneProjectQuery {
+
     final String projectId;
     final String clientId;
 

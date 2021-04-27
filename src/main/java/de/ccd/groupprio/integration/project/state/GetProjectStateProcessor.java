@@ -1,33 +1,34 @@
 package de.ccd.groupprio.integration.project.state;
 
-import de.ccd.groupprio.domain.data.WeightedItem;
-import de.ccd.groupprio.repository.project.ProjectRepository;
-import de.ccd.groupprio.repository.submission.SubmissionRepository;
-import de.ccd.groupprio.repository.weight.WeightRepository;
+import de.ccd.groupprio.domain.event.ItemOrderSuggestedEvent;
+import de.ccd.groupprio.domain.event.ProjectCreatedEvent;
+import de.ccd.groupprio.domain.event.ProjectReorderedEvent;
+import de.ccd.groupprio.event_store.Event;
+import de.ccd.groupprio.event_store.EventStore;
 import lombok.RequiredArgsConstructor;
 
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.Comparator;
 
 @RequiredArgsConstructor
 class GetProjectStateProcessor {
 
-    private final ProjectRepository projectRepository;
-    private final WeightRepository weightRepository;
-    private final SubmissionRepository submissionRepository;
+    private final EventStore eventStore;
 
     ProjectStateResponse process(ProjectStateQuery qry) {
-        var project = projectRepository
-                .getByProjectId(qry.projectId);
+        var title = eventStore.replay(qry.projectId, ProjectCreatedEvent.class)
+                              .findFirst()
+                              .orElseThrow()
+                              .getTitle();
 
-        var weightedItems = weightRepository
-                .findForProjectId(qry.projectId).stream()
-                .map(WeightedItem::getName)
-                .collect(Collectors.toList());
+        var orderedItems = eventStore.replay(qry.projectId, ProjectReorderedEvent.class)
+                                     .max(Comparator.comparingLong(Event::getIndex))
+                                     .map(ProjectReorderedEvent::getOrderedItems)
+                                     .orElse(Collections.emptyList());
 
-        var submissionCount = submissionRepository
-                .getSubmissionCount(qry.projectId);
+        var submissionCount = eventStore.replay(qry.projectId, ItemOrderSuggestedEvent.class)
+                                        .count();
 
-        return new ProjectStateResponse(project.getTitle(), weightedItems, submissionCount);
+        return new ProjectStateResponse(title, orderedItems, submissionCount);
     }
-
 }

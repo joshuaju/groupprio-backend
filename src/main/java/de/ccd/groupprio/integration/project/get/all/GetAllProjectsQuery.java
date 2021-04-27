@@ -5,9 +5,10 @@ import spark.Request;
 
 @RequiredArgsConstructor
 class GetAllProjectsQuery {
+
     final String clientId;
 
-    static GetAllProjectsQuery from(Request req){
+    static GetAllProjectsQuery from(Request req) {
         return new GetAllProjectsQuery(req.headers("clientId"));
     }
 }

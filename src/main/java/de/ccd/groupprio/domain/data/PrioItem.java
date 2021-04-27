@@ -22,7 +22,7 @@ public class PrioItem implements Comparable<PrioItem> {
 
     public static List<PrioItem> listOf(List<String> itemNames) {
         return itemNames.stream()
-                .map(PrioItem::new)
-                .collect(Collectors.toList());
+                        .map(PrioItem::new)
+                        .collect(Collectors.toList());
     }
 }
