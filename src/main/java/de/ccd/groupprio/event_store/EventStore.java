@@ -7,8 +7,6 @@ public interface EventStore {
 
     void record(Event event);
 
-    void record(Event... events);
-
     void record(List<Event> events);
 
     List<Event> replay();
@@ -16,6 +14,4 @@ public interface EventStore {
     Stream<Event> replay(String contextId);
 
     <T extends Event> Stream<T> replay(Class<T> clazz);
-
-    <T extends Event> Stream<T> replay(String contextId, Class<T> clazz);
 }
