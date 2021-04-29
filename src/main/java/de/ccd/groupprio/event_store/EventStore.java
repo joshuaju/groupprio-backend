@@ -11,6 +11,8 @@ public interface EventStore {
 
     List<Event> replay();
 
+    Stream<Event> replay(String contextId);
+
     <T extends Event> Stream<T> replay(Class<T> clazz);
 
     <T extends Event> Stream<T> replay(String contextId, Class<T> clazz);

@@ -43,6 +43,12 @@ public class EventStoreMem implements EventStore {
     }
 
     @Override
+    public Stream<Event> replay(String contextId) {
+        return replay().stream()
+                  .filter(e -> e.getContextId().equals(contextId));
+    }
+
+    @Override
     public <T extends Event> Stream<T> replay(Class<T> clazz) {
         return replay().stream()
                        .filter(e -> clazz.isAssignableFrom(e.getClass()))

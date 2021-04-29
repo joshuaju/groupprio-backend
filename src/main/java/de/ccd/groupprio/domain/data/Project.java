@@ -1,21 +1,30 @@
 package de.ccd.groupprio.domain.data;
 
+import de.ccd.groupprio.domain.event.ItemOrderSuggestedEvent;
+import de.ccd.groupprio.domain.event.ItemsAddedEvent;
+import de.ccd.groupprio.domain.event.ProjectCreatedEvent;
+import de.ccd.groupprio.event_store.Event;
 import lombok.ToString;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @ToString
 public class Project {
 
-    private final String id;
-    private final String title;
-    private final Set<String> items;
-    private final String clientId; // owner
-    private final Set<String> submitterIds; //
-    private final boolean isMultipleSubmissionsAllowed;
+    private String id;
+    private String title;
+    private Set<String> items;
+    private String clientId; // owner
+    private Set<String> submitterIds; //
+    private boolean isMultipleSubmissionsAllowed;
+
+    private Project() {
+
+    }
 
     public Project(
               String title,
@@ -70,5 +79,31 @@ public class Project {
 
     public boolean isClientNotAllowedToSubmit(String clientId) {
         return !isClientAllowedToSubmit(clientId);
+    }
+
+    public static Project rehydrate(Stream<Event> events) {
+        var project = new Project();
+        Set<String> submitterIds = new HashSet<>();
+        events.forEach((event) -> {
+            switch (event.getType()) {
+                case "ProjectCreatedEvent":
+                    var created = (ProjectCreatedEvent) event;
+                    project.id = created.getContextId();
+                    project.title = created.getTitle();
+                    project.isMultipleSubmissionsAllowed = created.isMultiSubmission();
+                    project.clientId = created.getOwnerId();
+                    break;
+                case "ItemsAddedEvent":
+                    var added = (ItemsAddedEvent) event;
+                    project.items = added.getItems();
+                    break;
+                case "ItemOrderSuggestedEvent":
+                    var suggested = (ItemOrderSuggestedEvent) event;
+                    submitterIds.add(suggested.getSubmitterId());
+                    break;
+            }
+        });
+        project.submitterIds = submitterIds;
+        return project;
     }
 }
