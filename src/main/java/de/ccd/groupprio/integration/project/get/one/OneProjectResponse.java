@@ -1,6 +1,6 @@
 package de.ccd.groupprio.integration.project.get.one;
 
-import de.ccd.groupprio.domain.data.Project;
+import de.ccd.groupprio.domain.data.ProjectAggregate;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
@@ -13,7 +13,7 @@ class OneProjectResponse {
     final Set<String> items;
     final boolean isSubmissionAllowed;
 
-    public static OneProjectResponse from(Project project, boolean isSubmissionAllowed) {
+    public static OneProjectResponse from(ProjectAggregate project, boolean isSubmissionAllowed) {
         return new OneProjectResponse(
                   project.getId(),
                   project.getTitle(),

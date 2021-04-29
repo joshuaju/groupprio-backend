@@ -1,5 +1,6 @@
 package de.ccd.groupprio.event_store;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +28,11 @@ public class EventStoreMem implements EventStore {
 
     @Override
     public void record(Event... events) {
+        record(Arrays.asList(events));
+    }
+
+    @Override
+    public void record(List<Event> events) {
         try {
             writeLock.lock();
             for (Event e : events) {
@@ -45,7 +51,7 @@ public class EventStoreMem implements EventStore {
     @Override
     public Stream<Event> replay(String contextId) {
         return replay().stream()
-                  .filter(e -> e.getContextId().equals(contextId));
+                       .filter(e -> e.getContextId().equals(contextId));
     }
 
     @Override

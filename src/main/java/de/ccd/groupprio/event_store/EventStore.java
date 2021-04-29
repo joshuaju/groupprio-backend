@@ -9,6 +9,8 @@ public interface EventStore {
 
     void record(Event... events);
 
+    void record(List<Event> events);
+
     List<Event> replay();
 
     Stream<Event> replay(String contextId);
